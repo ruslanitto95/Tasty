@@ -1,0 +1,41 @@
+# Python / tooling
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.spec.bak
+
+# Secrets and local config
+.env
+.env.*
+credentials*
+*.key
+*.pem
+
+# Never commit model weights, caches, temp audio, logs or patient data
+models/
+*.ckpt
+*.onnx
+*.safetensors
+cache/
+.cache/
+temp/
+tmp/
+logs/
+*.log
+recordings/
+dev_recordings/
+tests/benchmark/audio/*
+!tests/benchmark/audio/README.md
+tests/benchmark/outputs/
+tests/benchmark/metrics/
+*.patient.*
+
+# Agent workspace
+.hoplite/

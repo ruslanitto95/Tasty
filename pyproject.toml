@@ -1,0 +1,100 @@
+[project]
+name = "medical-visit-assistant"
+version = "0.1.0"
+description = "Local speech-to-draft assistant for outpatient visits (complaints + history of present illness)."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = "MIT"
+dependencies = [
+    "PySide6-Essentials==6.11.2",
+    "torch==2.10.0",
+    "torchaudio==2.10.0",
+    "gigaam",
+    "silero-vad==6.2.3",
+    "sounddevice==0.5.6",
+    "soundfile==0.14.0",
+    "soxr==1.1.0",
+    "numpy>=2.2,<2.4",
+    "pydantic==2.13.5",
+    "httpx==0.28.1",
+    "keyring==25.7.0",
+    "platformdirs==4.12.2",
+    "psutil==7.2.2",
+]
+
+[project.scripts]
+mva = "mva.app:main"
+
+[dependency-groups]
+dev = [
+    "pytest==9.1.1",
+    "pytest-qt==4.5.0",
+    "pytest-timeout==2.4.0",
+    "ruff==0.16.9",
+    "mypy==2.3.1",
+    "pre-commit==4.6.2",
+    "pyinstaller==6.22.3",
+    "pip-audit==2.10.1",
+]
+
+[tool.uv]
+required-environments = [
+    "sys_platform == 'win32' and platform_machine == 'AMD64'",
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+]
+
+[tool.uv.sources]
+# Pinned, reviewed GigaAM commit (see docs/TECH_DECISIONS.md). Never float to a branch.
+gigaam = { git = "https://github.com/salute-developers/GigaAM", rev = "7447938d791c4f3e643386ee22c33777004293a5" }
+torch = { index = "pytorch-cpu" }
+torchaudio = { index = "pytorch-cpu" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mva"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "S", "PT"]
+ignore = ["RUF001", "RUF002", "RUF003", "S101", "S603", "S607"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S", "PT011"]
+"scripts/**" = ["S"]
+
+[tool.mypy]
+python_version = "3.12"
+mypy_path = "src"
+packages = ["mva"]
+strict = true
+ignore_missing_imports = true
+disallow_untyped_calls = false
+warn_return_any = false
+
+[[tool.mypy.overrides]]
+module = ["mva.ui.*"]
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_any_generics = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "model: requires the real GigaAM model (downloads ~450 MB on first run)",
+    "audio_device: requires a capture device (real or virtual)",
+    "gui: requires a Qt platform",
+]
+timeout = 900
