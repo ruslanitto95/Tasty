@@ -77,17 +77,25 @@ jobs:
       - name: Virtual microphone (VB-CABLE) for a real WASAPI capture test
         id: vbcable
         continue-on-error: true
+        timeout-minutes: 6
         run: |
           Set-Service Audiosrv -StartupType Automatic; Start-Service Audiosrv; Start-Service AudioEndpointBuilder -ErrorAction SilentlyContinue
           Invoke-WebRequest https://download.vb-audio.com/Download_CABLE/VBCABLE_Driver_Pack43.zip -OutFile $env:RUNNER_TEMP\vbcable.zip
           Expand-Archive $env:RUNNER_TEMP\vbcable.zip -DestinationPath $env:RUNNER_TEMP\vbcable -Force
-          Start-Process "$env:RUNNER_TEMP\vbcable\VBCABLE_Setup_x64.exe" -ArgumentList "-i","-h" -Wait
+          # Pre-trust the driver publisher so the silent install does not wait for a dialog.
+          $cat = Get-ChildItem $env:RUNNER_TEMP\vbcable -Filter *.cat | Select-Object -First 1
+          $cert = (Get-AuthenticodeSignature $cat.FullName).SignerCertificate
+          $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("TrustedPublisher", "LocalMachine")
+          $store.Open("ReadWrite"); $store.Add($cert); $store.Close()
+          $setup = Start-Process "$env:RUNNER_TEMP\vbcable\VBCABLE_Setup_x64.exe" -ArgumentList "-i","-h" -PassThru
+          if (-not $setup.WaitForExit(180000)) { $setup.Kill(); throw "VB-CABLE setup timed out" }
           Start-Sleep -Seconds 10
           uv run python -c "import sounddevice as sd; [print(i, d['name'], sd.query_hostapis(d['hostapi'])['name'], d['max_input_channels'], d['max_output_channels']) for i, d in enumerate(sd.query_devices())]"
 
       - name: Microphone transcription through the installed app (WASAPI)
         if: steps.vbcable.outcome == 'success'
         continue-on-error: true
+        timeout-minutes: 8
         run: |
           $env:LOCALAPPDATA = "$env:RUNNER_TEMP\clean-profile\AppData\Local"
           $player = Start-Job -ScriptBlock {
@@ -102,6 +110,7 @@ jobs:
           if ($p.ExitCode -ne 0) { throw "mic self-test failed: $($p.ExitCode)" }
 
       - name: GUI smoke test of the installed app
+        timeout-minutes: 5
         run: |
           $env:LOCALAPPDATA = "$env:RUNNER_TEMP\clean-profile\AppData\Local"
           $p = Start-Process $env:MVA_EXE -ArgumentList "--smoke-seconds","25" -Wait -PassThru
