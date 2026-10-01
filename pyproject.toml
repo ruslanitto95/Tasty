@@ -38,6 +38,9 @@ dev = [
 ]
 
 [tool.uv]
+# GigaAM pins onnx==1.19.* for its optional ONNX export (unused here and excluded from the
+# build); override to a release without known vulnerabilities.
+override-dependencies = ["onnx>=1.22,<1.23"]
 required-environments = [
     "sys_platform == 'win32' and platform_machine == 'AMD64'",
     "sys_platform == 'linux' and platform_machine == 'x86_64'",
@@ -68,14 +71,15 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "S", "PT"]
-ignore = ["RUF001", "RUF002", "RUF003", "S101", "S603", "S607"]
+ignore = ["RUF001", "RUF002", "RUF003", "S101", "S603", "S607", "E501"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S", "PT011"]
+"tests/**" = ["S", "PT011", "PT018", "E501"]
 "scripts/**" = ["S"]
 
 [tool.mypy]
 python_version = "3.12"
+plugins = ["pydantic.mypy"]
 mypy_path = "src"
 packages = ["mva"]
 strict = true

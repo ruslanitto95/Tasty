@@ -1,0 +1,173 @@
+"""Final check of formatter output against validated facts (NO NEW FACTS)."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+from mva.clinical.lexicon import Lexicon, stems_overlap
+from mva.clinical.schemas import ClinicalFact, FormattedDocument, Polarity, SentenceTrace
+from mva.clinical.text import (
+    content_stems,
+    durations,
+    has_absence_negation,
+    laterality,
+    laterality_compatible_any,
+    norm,
+    numbers,
+    split_sentences,
+    strip_durations,
+    temperatures,
+    tokens,
+)
+from mva.clinical.validation import PHRASING_STEMS
+
+
+@dataclass
+class Violation:
+    section: str
+    sentence: str
+    problem: str
+
+    def describe(self) -> str:
+        return f"[{self.section}] {self.problem}: {self.sentence}"
+
+
+class FinalFactChecker:
+    def __init__(self, lexicon: Lexicon, min_coverage: float = 0.75) -> None:
+        self.lexicon = lexicon
+        self.min_coverage = min_coverage
+
+    def check(self, doc: FormattedDocument, facts: list[ClinicalFact]) -> list[Violation]:
+        violations: list[Violation] = []
+        for section, text in (("complaints", doc.complaints_text), ("history", doc.history_text)):
+            for sentence in split_sentences(text):
+                for clause in sentence.split(";") if section == "complaints" else [sentence]:
+                    if clause.strip():
+                        violations.extend(self._check_sentence(section, clause.strip(), facts))
+        return violations
+
+    def check_completeness(
+        self, doc: FormattedDocument, reference: FormattedDocument, facts: list[ClinicalFact]
+    ) -> list[Violation]:
+        """The stylised text must not drop sections or critical details of validated facts."""
+        out: list[Violation] = []
+        sections = (
+            ("complaints", doc.complaints_text, reference.complaints_text),
+            ("history", doc.history_text, reference.history_text),
+        )
+        for section, text, ref in sections:
+            if ref.strip() and not text.strip():
+                out.append(Violation(section, "", "section omitted"))
+                continue
+            if not ref.strip():
+                continue
+            if not temperatures(ref) <= temperatures(text):
+                out.append(Violation(section, text, "temperature omitted"))
+            if not laterality(ref) <= laterality(text) | (
+                {"right", "left"} if "bilateral" in laterality(text) else set()
+            ):
+                out.append(Violation(section, text, "laterality omitted"))
+            ref_durs, text_durs = durations(ref), durations(text)
+            if any(not any(d.close_to(t) for t in text_durs) for d in ref_durs):
+                out.append(Violation(section, text, "duration omitted"))
+            for surface in self.lexicon.unsupported_medications(ref, text):
+                out.append(Violation(section, text, f"medication omitted: {surface}"))
+            if has_absence_negation(ref) and not has_absence_negation(text):
+                out.append(Violation(section, text, "negation omitted"))
+        return out
+
+    def _fact_text(self, fact: ClinicalFact) -> str:
+        return f"{fact.value} {fact.statement}"
+
+    def _check_sentence(
+        self, section: str, sentence: str, facts: list[ClinicalFact]
+    ) -> list[Violation]:
+        out: list[Violation] = []
+        all_text = " ".join(self._fact_text(f) for f in facts)
+        sent_stems = content_stems(sentence) - PHRASING_STEMS
+        # A sentence made only of phrasing words («Эффекта … не отмечает») is matched on all stems.
+        match_stems = sent_stems or content_stems(sentence)
+        supporting = [
+            f
+            for f in facts
+            if stems_overlap(
+                match_stems,
+                self.lexicon.expand_stems(content_stems(self._fact_text(f)), self._fact_text(f)),
+            )
+        ]
+        if sent_stems and not supporting:
+            return [Violation(section, sentence, "no supporting fact")]
+        support_text = " ".join(self._fact_text(f) for f in supporting) or all_text
+        support_stems = self.lexicon.expand_stems(content_stems(support_text), support_text)
+        if sent_stems:
+            covered = sum(1 for s in sent_stems if stems_overlap({s}, support_stems))
+            if covered / len(sent_stems) < self.min_coverage:
+                out.append(Violation(section, sentence, "content not covered by facts"))
+        sentence_heads = self.lexicon.heads_in(sentence)
+        side_facts = supporting
+        if sentence_heads:
+            side_facts = [
+                f for f in supporting if self.lexicon.heads_in(self._fact_text(f)) & sentence_heads
+            ]
+            fact_heads = set().union(
+                *(self.lexicon.heads_in(self._fact_text(f)) for f in side_facts)
+            )
+            if sentence_heads - fact_heads:
+                out.append(Violation(section, sentence, "symptom not in facts"))
+            side_facts = side_facts or supporting
+        if temperatures(sentence) - temperatures(all_text):
+            out.append(Violation(section, sentence, "temperature not in facts"))
+        fact_durs = durations(all_text)
+        for dur in durations(sentence):
+            if not any(dur.close_to(f) for f in fact_durs):
+                out.append(Violation(section, sentence, "duration not in facts"))
+        nums = {n for n in numbers(strip_durations(sentence)) if not 34 <= n <= 43}
+        if nums - set(numbers(all_text)):
+            out.append(Violation(section, sentence, "number not in facts"))
+        if not laterality_compatible_any(
+            laterality(sentence), [laterality(self._fact_text(f)) for f in side_facts]
+        ):
+            out.append(Violation(section, sentence, "laterality not in facts"))
+        if has_absence_negation(sentence):
+            negatives = [f for f in supporting if f.polarity == Polarity.NEGATIVE]
+            symptom_neg = any(has_absence_negation(self._fact_text(f)) for f in supporting)
+            if not negatives and not symptom_neg:
+                out.append(Violation(section, sentence, "negation without negative fact"))
+        elif any(f.polarity == Polarity.NEGATIVE for f in supporting) and len(supporting) == 1:
+            out.append(Violation(section, sentence, "negative fact rendered as positive"))
+        for surface in self.lexicon.unsupported_medications(sentence, all_text):
+            out.append(Violation(section, sentence, f"medication not in facts: {surface}"))
+        fact_tokens = set(tokens(all_text))
+        fact_tokens = set(tokens(all_text))
+        for qualifier in self.lexicon.risky_in(sentence):
+            if not any(t.startswith(qualifier) for t in fact_tokens):
+                out.append(Violation(section, sentence, f"qualifier not in facts: {qualifier}"))
+        for diagnosis in self.lexicon.diagnoses_in(sentence):
+            if not any(t.startswith(diagnosis) for t in fact_tokens):
+                out.append(Violation(section, sentence, f"diagnosis: {diagnosis}"))
+        for phrase in self.lexicon.forbidden_in(sentence):
+            if phrase not in norm(all_text):
+                out.append(Violation(section, sentence, f"forbidden phrase: {phrase}"))
+        return out
+
+    def trace(self, doc: FormattedDocument, facts: list[ClinicalFact]) -> list[SentenceTrace]:
+        result: list[SentenceTrace] = []
+        for section, text in (("complaints", doc.complaints_text), ("history", doc.history_text)):
+            for sentence in split_sentences(text):
+                clauses = sentence.split(";") if section == "complaints" else [sentence]
+                ids: list[str] = []
+                for clause in clauses:
+                    stems = content_stems(clause) - PHRASING_STEMS
+                    scored = []
+                    for fact in facts:
+                        ft = self._fact_text(fact)
+                        fs = self.lexicon.expand_stems(content_stems(ft), ft)
+                        score = sum(1 for s in stems if stems_overlap({s}, fs))
+                        if score:
+                            scored.append((score, fact.id))
+                    scored.sort(reverse=True)
+                    if scored:
+                        top = scored[0][0]
+                        ids.extend(fid for score, fid in scored if score == top and fid not in ids)
+                result.append(SentenceTrace(section=section, sentence=sentence, fact_ids=ids))
+        return result

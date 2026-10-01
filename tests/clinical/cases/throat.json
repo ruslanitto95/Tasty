@@ -1,0 +1,425 @@
+[
+ {
+  "id": "throat_sore_fever_past_paracetamol",
+  "tags": [
+   "throat",
+   "numbers",
+   "medication",
+   "laterality"
+  ],
+  "transcript": [
+   "Горло болит.",
+   "Сколько дней?",
+   "Три дня.",
+   "Температура была?",
+   "Да, вчера тридцать восемь и два.",
+   "Что-нибудь пили?",
+   "Парацетамол пил."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло болит",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Три дня",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "38,2 °C вчера",
+    "statement": "Вчера отмечал повышение температуры тела до 38,2 °C.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s4",
+     "s5"
+    ],
+    "evidence_quote": "вчера тридцать восемь и два",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Парацетамол",
+    "statement": "Самостоятельно принимал Парацетамол.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s6",
+     "s7"
+    ],
+    "evidence_quote": "Парацетамол пил",
+    "id": "f4"
+   },
+   {
+    "category": "temperature",
+    "value": "39,2 °C",
+    "statement": "Температура до 39,2 °C.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5"
+    ],
+    "evidence_quote": "вчера тридцать восемь и два",
+    "id": "f5"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в горле справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло болит",
+    "id": "f6"
+   },
+   {
+    "category": "treatment",
+    "value": "Ибупрофен",
+    "statement": "Принимал Ибупрофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s7"
+    ],
+    "evidence_quote": "Парацетамол пил",
+    "id": "f7"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "rejected": {
+    "f5": "temperature_mismatch",
+    "f6": "laterality_mismatch",
+    "f7": "medication_not_in_evidence"
+   },
+   "complaints": "Боль в горле.",
+   "history": "Считает себя больным около 3 дней. Вчера отмечал повышение температуры тела до 38,2 °C. Самостоятельно принимал Парацетамол.",
+   "warning_codes": [
+    "laterality_mismatch",
+    "medication_not_in_evidence",
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "39,2",
+   "справа",
+   "Ибупрофен"
+  ]
+ },
+ {
+  "id": "throat_doctor_says_pharyngitis",
+  "tags": [
+   "throat",
+   "hallucination"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Горло болит, глотать больно.",
+   "Так, понятно. Похоже на фарингит.",
+   "Это что-то серьёзное?",
+   "Пока не знаю, посмотрим."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Горло болит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль при глотании",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "глотать больно",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "фарингит",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Похоже на фарингит",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "diagnosis_not_allowed"
+   },
+   "complaints": "Боль в горле; боль при глотании.",
+   "history": "",
+   "warning_codes": [
+    "diagnosis_mentioned"
+   ]
+  },
+  "must_not_contain": [
+   "фарингит"
+  ]
+ },
+ {
+  "id": "throat_difficulty_swallowing",
+  "tags": [
+   "throat",
+   "numbers"
+  ],
+  "transcript": [
+   "Глотать тяжело стало.",
+   "Как давно?",
+   "Полторы недели."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение глотания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Глотать тяжело стало",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 1,5 недели",
+    "statement": "Считает себя больным около 1,5 недели.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Полторы недели",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 недель",
+    "statement": "Считает себя больным около 3 недель.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Полторы недели",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "duration_mismatch"
+   },
+   "complaints": "Затруднение глотания.",
+   "history": "Считает себя больным около 1,5 недели.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "3 недель"
+  ]
+ },
+ {
+  "id": "throat_hoarseness_two_weeks",
+  "tags": [
+   "throat",
+   "numbers",
+   "hallucination"
+  ],
+  "transcript": [
+   "Голос охрип.",
+   "Давно?",
+   "Две недели уже. Я много кричал на футболе."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "осиплость голоса",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Голос охрип",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 недель",
+    "statement": "Считает себя больным около 2 недель.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Две недели уже",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "афония",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Голос охрип",
+    "id": "f3"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 месяцев",
+    "statement": "Считает себя больным около 2 месяцев.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Две недели уже",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "value_not_supported",
+    "f4": "duration_mismatch"
+   },
+   "complaints": "Осиплость голоса.",
+   "history": "Считает себя больным около 2 недель.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "афони",
+   "месяцев"
+  ]
+ },
+ {
+  "id": "throat_no_cough_normal_temperature",
+  "tags": [
+   "throat",
+   "negation",
+   "numbers"
+  ],
+  "transcript": [
+   "Горло першит.",
+   "Кашель есть?",
+   "Нет, кашля нет.",
+   "Температура?",
+   "Нормальная, тридцать шесть и шесть."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "першение в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло першит",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "36,6 °C",
+    "statement": "Температура тела 36,6 °C.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4",
+     "s5"
+    ],
+    "evidence_quote": "тридцать шесть и шесть",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "37,6 °C",
+    "statement": "Температура тела 37,6 °C.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5"
+    ],
+    "evidence_quote": "тридцать шесть и шесть",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "temperature_mismatch"
+   },
+   "complaints": "Першение в горле.",
+   "history": "Температура тела 36,6 °C.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "37,6"
+  ]
+ }
+]

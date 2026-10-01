@@ -1,0 +1,24 @@
+{
+  "models": [
+    {
+      "model_name": "v3_e2e_rnnt",
+      "display_name": "GigaAM-v3 e2e RNNT (punctuation + normalization)",
+      "gigaam_commit": "7447938d791c4f3e643386ee22c33777004293a5",
+      "revision": "v3_e2e_rnnt@cdn-etag:cb2686c20c35955b1b45d679d763e32f-54",
+      "files": [
+        {
+          "name": "v3_e2e_rnnt.ckpt",
+          "url": "https://cdn.chatwm.opensmodel.sberdevices.ru/GigaAM/v3_e2e_rnnt.ckpt",
+          "size": 448929252,
+          "sha256": "f60c62fe45902d967000770a12f260de7c5ac4d4b8e5e852f1df8c548e3958b5"
+        },
+        {
+          "name": "v3_e2e_rnnt_tokenizer.model",
+          "url": "https://cdn.chatwm.opensmodel.sberdevices.ru/GigaAM/v3_e2e_rnnt_tokenizer.model",
+          "size": 255336,
+          "sha256": "828c12c991019eef952a960661f25a92d6ad279591e2ea466b4aeddf1d20a18a"
+        }
+      ]
+    }
+  ]
+}

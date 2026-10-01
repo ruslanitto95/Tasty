@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import logging
 import os
@@ -118,10 +119,8 @@ class SettingsStore:
         except (OSError, ValueError, ValidationError) as exc:
             backup = self.path.with_suffix(".corrupt.json")
             log.warning("Settings unreadable (%s); using defaults", type(exc).__name__)
-            try:
+            with contextlib.suppress(OSError):
                 os.replace(self.path, backup)
-            except OSError:
-                pass
             return AppSettings()
 
     def save(self, settings: AppSettings) -> None:

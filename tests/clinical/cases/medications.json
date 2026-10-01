@@ -1,0 +1,2353 @@
+[
+ {
+  "id": "med_navivin_trade",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Називин капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Називин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Називин капал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Називин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_otrivin_trade",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Отривин капал, дня три."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Самостоятельно применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Отривин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Отривин капал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Отривин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Називин"
+  ]
+ },
+ {
+  "id": "med_sanorin",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Санорин закапывал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Санорин",
+    "statement": "Самостоятельно применял Санорин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Санорин закапывал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Нафтизин",
+    "statement": "Применял Нафтизин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Санорин закапывал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Санорин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Нафтизин"
+  ]
+ },
+ {
+  "id": "med_naphthyzin",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Нафтизин капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Нафтизин",
+    "statement": "Самостоятельно применял Нафтизин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Нафтизин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Санорин",
+    "statement": "Применял Санорин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нафтизин капал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Нафтизин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Санорин"
+  ]
+ },
+ {
+  "id": "med_galazolin",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Галазолин капала."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Галазолин",
+    "statement": "Самостоятельно применяла Галазолин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Галазолин капала",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Галазолин капала",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применяла Галазолин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_tizin",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Тизин ксило брызгал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Тизин ксило",
+    "statement": "Самостоятельно применял Тизин ксило.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Тизин ксило брызгал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Ксимелин",
+    "statement": "Применял Ксимелин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Тизин ксило брызгал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Тизин ксило.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Ксимелин"
+  ]
+ },
+ {
+  "id": "med_aquamaris_rinsing",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Аквамарис промывала нос."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Аквамарис",
+    "statement": "Самостоятельно применяла Аквамарис.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Аквамарис промывала нос",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Аквалор",
+    "statement": "Применял Аквалор.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Аквамарис промывала нос",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применяла Аквамарис.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Аквалор"
+  ]
+ },
+ {
+  "id": "med_nazonex",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Назонекс пшикал неделю."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Назонекс",
+    "statement": "Самостоятельно применял Назонекс.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Назонекс пшикал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Авамис",
+    "statement": "Применял Авамис.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Назонекс пшикал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Назонекс.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Авамис"
+  ]
+ },
+ {
+  "id": "med_polydexa",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Полидекса капала в нос."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Полидекса",
+    "statement": "Самостоятельно применяла Полидекса.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Полидекса капала в нос",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Изофра",
+    "statement": "Применял Изофра.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Полидекса капала в нос",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применяла Полидекса.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Изофра"
+  ]
+ },
+ {
+  "id": "med_isofra",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Изофра пшикал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Изофра",
+    "statement": "Самостоятельно применял Изофра.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Изофра пшикал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Полидекса",
+    "statement": "Применял Полидекса.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Изофра пшикал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Изофра.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Полидекса"
+  ]
+ },
+ {
+  "id": "med_amoxiclav",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Амоксиклав пил пять дней."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Амоксиклав",
+    "statement": "Самостоятельно принимал Амоксиклав.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклав пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Аугментин",
+    "statement": "Применял Аугментин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклав пил",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимал Амоксиклав.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Аугментин"
+  ]
+ },
+ {
+  "id": "med_azithromycin",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Азитромицин принимала."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Азитромицин",
+    "statement": "Самостоятельно принимала Азитромицин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Азитромицин принимала",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Кларитромицин",
+    "statement": "Применял Кларитромицин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Азитромицин принимала",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимала Азитромицин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Кларитромицин"
+  ]
+ },
+ {
+  "id": "med_sumamed",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Сумамед пил три дня."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Сумамед",
+    "statement": "Самостоятельно принимал Сумамед.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Сумамед пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Амоксиклав",
+    "statement": "Применял Амоксиклав.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Сумамед пил",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимал Сумамед.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Амоксиклав"
+  ]
+ },
+ {
+  "id": "med_nurofen",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Нурофен пил от температуры."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Нурофен",
+    "statement": "Самостоятельно принимал Нурофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Нурофен пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Парацетамол",
+    "statement": "Применял Парацетамол.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нурофен пил",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимал Нурофен.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Парацетамол"
+  ]
+ },
+ {
+  "id": "med_paracetamol",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Парацетамол принимал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Парацетамол",
+    "statement": "Самостоятельно принимал Парацетамол.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Парацетамол принимал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Ибупрофен",
+    "statement": "Применял Ибупрофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Парацетамол принимал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимал Парацетамол.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Ибупрофен"
+  ]
+ },
+ {
+  "id": "med_supradin_supras",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Супрастин пила на ночь."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Супрастин",
+    "statement": "Самостоятельно принимала Супрастин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Супрастин пила",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Зиртек",
+    "statement": "Применял Зиртек.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Супрастин пила",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимала Супрастин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Зиртек"
+  ]
+ },
+ {
+  "id": "med_zyrtec",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Зиртек пью."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Зиртек",
+    "statement": "Самостоятельно принимает Зиртек.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Зиртек пью",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Супрастин",
+    "statement": "Применял Супрастин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Зиртек пью",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимает Зиртек.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Супрастин"
+  ]
+ },
+ {
+  "id": "med_otipax_ear",
+  "tags": [
+   "medication",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Отипакс в ухо капала."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Отипакс",
+    "statement": "Самостоятельно применяла Отипакс.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Отипакс в ухо капала",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Отофа",
+    "statement": "Применял Отофа.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Отипакс в ухо капала",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применяла Отипакс.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Отофа"
+  ]
+ },
+ {
+  "id": "med_tantum_verde_two_words",
+  "tags": [
+   "medication",
+   "throat"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Тантум Верде брызгал в горло."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Тантум Верде",
+    "statement": "Самостоятельно применял Тантум Верде.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Тантум Верде брызгал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Гексорал",
+    "statement": "Применял Гексорал.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Тантум Верде брызгал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Тантум Верде.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Гексорал"
+  ]
+ },
+ {
+  "id": "med_hexoral",
+  "tags": [
+   "medication",
+   "throat"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Гексорал полоскала горло."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Гексорал",
+    "statement": "Самостоятельно применяла Гексорал.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Гексорал полоскала горло",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Мирамистин",
+    "statement": "Применял Мирамистин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Гексорал полоскала горло",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применяла Гексорал.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Мирамистин"
+  ]
+ },
+ {
+  "id": "med_miramistin",
+  "tags": [
+   "medication",
+   "throat"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Мирамистином горло брызгала."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Мирамистин",
+    "statement": "Самостоятельно применяла Мирамистин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Мирамистином горло брызгала",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Хлоргексидин",
+    "statement": "Применял Хлоргексидин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Мирамистином горло брызгала",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применяла Мирамистин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Хлоргексидин"
+  ]
+ },
+ {
+  "id": "med_betaserc",
+  "tags": [
+   "medication",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Что принимали от головокружения?",
+   "Бетасерк пил по назначению невролога."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Бетасерк",
+    "statement": "Принимал Бетасерк.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Бетасерк пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Вестибо",
+    "statement": "Применял Вестибо.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Бетасерк пил",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Принимал Бетасерк.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Вестибо"
+  ]
+ },
+ {
+  "id": "med_inn_ibuprofen",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Ибупрофен пил."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Ибупрофен",
+    "statement": "Самостоятельно принимал Ибупрофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Ибупрофен пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Нурофен",
+    "statement": "Применял Нурофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Ибупрофен пил",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимал Ибупрофен.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Нурофен"
+  ]
+ },
+ {
+  "id": "med_inn_xylometazoline",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Ксилометазолин капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Ксилометазолин",
+    "statement": "Самостоятельно применял Ксилометазолин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Ксилометазолин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Ксилометазолин капал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Ксилометазолин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_inn_brand_added_by_llm",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Мометазон пшикал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Мометазон",
+    "statement": "Самостоятельно применял Мометазон.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Мометазон пшикал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Назонекс",
+    "statement": "Применял Назонекс.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Мометазон пшикал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Мометазон.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Назонекс"
+  ]
+ },
+ {
+  "id": "med_several_drugs_sequence",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Сначала Називин капал, потом Отривин, ещё Аквамарис промывала."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Сначала Називин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Затем применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "потом Отривин",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "Аквамарис",
+    "statement": "Также применял Аквамарис.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Аквамарис промывала",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Санорин",
+    "statement": "Применял Санорин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Сначала Називин капал, потом Отривин",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Називин. Затем применял Отривин. Также применял Аквамарис.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Санорин"
+  ]
+ },
+ {
+  "id": "med_several_drugs_with_antibiotic_named",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Что принимали?",
+   "Амоксиклав пил, Нурофен от температуры, Супрастин на ночь."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Амоксиклав",
+    "statement": "Самостоятельно принимал Амоксиклав.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклав пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Нурофен",
+    "statement": "Самостоятельно принимал Нурофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Нурофен от температуры",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "Супрастин",
+    "statement": "Самостоятельно принимал Супрастин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Супрастин на ночь",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Азитромицин",
+    "statement": "Принимал Азитромицин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклав пил",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимал Амоксиклав. Самостоятельно принимал Нурофен. Самостоятельно принимал Супрастин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Азитромицин"
+  ]
+ },
+ {
+  "id": "med_fuzzy_nazanex",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Назанекс капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Назонекс",
+    "statement": "Самостоятельно применял Назонекс.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Назанекс капал",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно применял назанекс.",
+   "warning_codes": [
+    "medication_uncertain"
+   ]
+  },
+  "must_not_contain": [
+   "Назонекс"
+  ]
+ },
+ {
+  "id": "med_fuzzy_otrevin",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Отревин капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Самостоятельно применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Отревин капал",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно применял отревин.",
+   "warning_codes": [
+    "medication_uncertain"
+   ]
+  },
+  "must_not_contain": [
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_fuzzy_nazyvin",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Назывин капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Назывин капал",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно применял назывин.",
+   "warning_codes": [
+    "medication_uncertain"
+   ]
+  },
+  "must_not_contain": [
+   "Називин"
+  ]
+ },
+ {
+  "id": "med_fuzzy_sanarin",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Санарин капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Санорин",
+    "statement": "Самостоятельно применял Санорин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Санарин капал",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно применял санарин.",
+   "warning_codes": [
+    "medication_uncertain"
+   ]
+  },
+  "must_not_contain": [
+   "Санорин"
+  ]
+ },
+ {
+  "id": "med_fuzzy_amoksiklov",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Амоксиклов пил."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Амоксиклав",
+    "statement": "Самостоятельно принимал Амоксиклав.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклов пил",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно принимал амоксиклов.",
+   "warning_codes": [
+    "medication_uncertain"
+   ]
+  },
+  "must_not_contain": [
+   "Амоксиклав"
+  ]
+ },
+ {
+  "id": "med_fuzzy_nurafen",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Нурафен пил."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Нурофен",
+    "statement": "Самостоятельно принимал Нурофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Нурафен пил",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно принимал нурафен.",
+   "warning_codes": [
+    "medication_uncertain"
+   ]
+  },
+  "must_not_contain": [
+   "Нурофен"
+  ]
+ },
+ {
+  "id": "med_fuzzy_llm_keeps_spoken_form_still_warns",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Назанекс пшикал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "назанекс",
+    "statement": "Самостоятельно применял назанекс.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Назанекс пшикал",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно применял назанекс.",
+   "warning_codes": [
+    "medication_uncertain"
+   ]
+  },
+  "must_not_contain": [
+   "Назонекс"
+  ]
+ },
+ {
+  "id": "med_unknown_kakie_to_kapli",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Какие-то капли капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "капли, название не уточнено",
+    "statement": "Самостоятельно применял капли, название не уточнено.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Какие-то капли капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Какие-то капли капал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял капли, название не уточнено.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Називин",
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_unknown_kakoi_to_sprey",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Какой-то спрей пшикал, не помню название."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "спрей, название не уточнено",
+    "statement": "Самостоятельно применял спрей, название не уточнено.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Какой-то спрей пшикал, не помню название",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Какой-то спрей пшикал, не помню название",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял спрей, название не уточнено.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Називин",
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_unknown_tabletki_zhena_kupila",
+  "tags": [
+   "medication",
+   "therapy"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Жена купила какие-то таблетки, пил."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "таблетки, название не уточнено",
+    "statement": "Самостоятельно принимал таблетки, название не уточнено.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Жена купила какие-то таблетки, пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Жена купила какие-то таблетки, пил",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Самостоятельно принимал таблетки, название не уточнено.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Називин",
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_doesnt_know_drug_nothing_invented",
+  "tags": [
+   "medication",
+   "hallucination"
+  ],
+  "transcript": [
+   "Что капали?",
+   "Не знаю, не помню."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Не знаю, не помню",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Не знаю, не помню",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "сосудосуживающие капли",
+    "statement": "Применял сосудосуживающие капли.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Не знаю, не помню",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [],
+   "rejected": {
+    "f1": "medication_not_in_evidence",
+    "f2": "medication_not_in_evidence",
+    "f3": "value_not_supported"
+   },
+   "complaints": "",
+   "history": "",
+   "warning_codes": [
+    "insufficient_data",
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Називин",
+   "Отривин",
+   "сосудосуж"
+  ]
+ },
+ {
+  "id": "med_dose_in_evidence",
+  "tags": [
+   "medication",
+   "numbers"
+  ],
+  "transcript": [
+   "Как капали?",
+   "Називин по две капли три раза в день."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин по 2 капли 3 раза в день",
+    "statement": "Самостоятельно применял Називин по 2 капли 3 раза в день.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Називин по две капли три раза в день",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин по 5 капель 4 раза в день",
+    "statement": "Применял Називин по 5 капель 4 раза в день.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Називин по две капли три раза в день",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "number_mismatch"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Називин по 2 капли 3 раза в день.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "5 капель"
+  ]
+ },
+ {
+  "id": "med_course_length_in_evidence",
+  "tags": [
+   "medication",
+   "numbers"
+  ],
+  "transcript": [
+   "Как долго принимали?",
+   "Амоксиклав пять дней пил."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Амоксиклав в течение 5 дней",
+    "statement": "Принимал Амоксиклав в течение 5 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклав пять дней пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Амоксиклав в течение 10 дней",
+    "statement": "Принимал Амоксиклав в течение 10 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклав пять дней пил",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "duration_mismatch"
+   },
+   "complaints": "",
+   "history": "Принимал Амоксиклав в течение 5 дней.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "10 дней"
+  ]
+ },
+ {
+  "id": "med_named_in_question_patient_confirms",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Називин капали?",
+   "Да, капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Називин капали? Да, капал",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно применял Називин.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "med_named_only_in_question_not_a_fact",
+  "tags": [
+   "medication",
+   "hallucination"
+  ],
+  "transcript": [
+   "Отривин капали?"
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Отривин капали",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [],
+   "rejected": {
+    "f1": "evidence_is_question"
+   },
+   "complaints": "",
+   "history": "",
+   "warning_codes": [
+    "insufficient_data"
+   ]
+  },
+  "must_not_contain": [
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_suggested_by_doctor_patient_denies",
+  "tags": [
+   "medication",
+   "negation"
+  ],
+  "transcript": [
+   "Отривин пробовали?",
+   "Нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Отривин пробовали? Нет",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [],
+   "rejected": {
+    "f1": "evidence_negates_fact"
+   },
+   "complaints": "",
+   "history": "",
+   "warning_codes": [
+    "insufficient_data"
+   ]
+  },
+  "must_not_contain": [
+   "Отривин"
+  ]
+ },
+ {
+  "id": "med_inflected_name_in_statement",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Називин капал, помогает ненадолго."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Називин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment_effect",
+    "value": "кратковременный эффект от Називина",
+    "statement": "Отмечает кратковременный эффект от применения Називина.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "помогает ненадолго",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно применял Називин. Отмечает кратковременный эффект от применения Називина.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "med_effect_short_lived",
+  "tags": [
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Називин капал, помогает ненадолго."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин с кратковременным эффектом.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Називин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment_effect",
+    "value": "выраженный эффект",
+    "statement": "Отмечает выраженный эффект.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "помогает ненадолго",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Називин с кратковременным эффектом.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "выраженн"
+  ]
+ }
+]

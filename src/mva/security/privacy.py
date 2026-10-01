@@ -10,6 +10,7 @@ from __future__ import annotations
 import logging
 import logging.handlers
 import re
+import sys
 from pathlib import Path
 
 _CYRILLIC = re.compile(r"[А-Яа-яЁё][А-Яа-яЁё\w\-]*")
@@ -67,7 +68,9 @@ def configure_logging(log_dir: Path | None, level: int = logging.INFO) -> None:
     for handler in list(root.handlers):
         root.removeHandler(handler)
     root.setLevel(level)
-    handlers: list[logging.Handler] = [logging.StreamHandler()]
+    handlers: list[logging.Handler] = []
+    if sys.stderr is not None:
+        handlers.append(logging.StreamHandler())
     if log_dir is not None:
         handlers.append(
             logging.handlers.RotatingFileHandler(

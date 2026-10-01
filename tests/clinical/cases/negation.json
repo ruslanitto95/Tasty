@@ -1,0 +1,1689 @@
+[
+ {
+  "id": "neg_no_fever_answer_only",
+  "tags": [
+   "negation",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Температура была?",
+   "Температуры не было.",
+   "Нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "повышения температуры не отмечал",
+    "statement": "Повышение температуры тела не отмечал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Температуры не было",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "повышение температуры",
+    "statement": "Отмечал повышение температуры тела.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Температуры не было",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "evidence_negates_fact"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Повышение температуры тела не отмечал.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "Отмечал повышение температуры"
+  ]
+ },
+ {
+  "id": "neg_antibiotic_not_taken",
+  "tags": [
+   "negation",
+   "medication"
+  ],
+  "transcript": [
+   "Антибиотики принимали?",
+   "Антибиотик не принимал.",
+   "Нос заложен третий день, ничем не лечился."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "антибиотики не принимал",
+    "statement": "Антибиотики не принимал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Антибиотик не принимал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "антибиотик",
+    "statement": "Принимал антибиотик.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Антибиотик не принимал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "evidence_negates_fact"
+   },
+   "complaints": "",
+   "history": "Антибиотики не принимал.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "Принимал антибиотик"
+  ]
+ },
+ {
+  "id": "neg_no_discharge_answer_only",
+  "tags": [
+   "negation",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен.",
+   "Выделения есть?",
+   "Нет, выделений нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Нет, выделений нет",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "evidence_negates_fact"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "выделения из носа"
+  ]
+ },
+ {
+  "id": "neg_no_cough_answer_only",
+  "tags": [
+   "negation",
+   "throat"
+  ],
+  "transcript": [
+   "Горло болит.",
+   "Кашель есть?",
+   "Кашля нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло болит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "кашель",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Кашля нет",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "evidence_negates_fact"
+   },
+   "complaints": "Боль в горле.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "кашель"
+  ]
+ },
+ {
+  "id": "neg_fever_inline_denied_and_invented",
+  "tags": [
+   "negation",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен, температуры нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "повышения температуры не отмечает",
+    "statement": "Повышение температуры тела не отмечает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "температуры нет",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "повышение температуры",
+    "statement": "Отмечал повышение температуры тела.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "температуры нет",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "evidence_negates_fact"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Повышение температуры тела не отмечает.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "Отмечал повышение"
+  ]
+ },
+ {
+  "id": "neg_nothing_dripped",
+  "tags": [
+   "negation",
+   "medication",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Что-нибудь капали в нос?",
+   "Ничего не капал.",
+   "Нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "в нос ничего не закапывал",
+    "statement": "В нос ничего не закапывал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Ничего не капал",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Ничего не капал",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "medication_not_in_evidence"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "В нос ничего не закапывал.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Називин"
+  ]
+ },
+ {
+  "id": "neg_unknown_is_not_denial_temperature_not_discussed",
+  "tags": [
+   "negation",
+   "hallucination"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Ухо болит с утра."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Ухо болит",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "температуру отрицает",
+    "statement": "Температуру отрицает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Ухо болит",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "лекарства не принимал",
+    "statement": "Лекарства не принимал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Ухо болит",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported",
+    "f3": "value_not_supported"
+   },
+   "complaints": "Боль в ухе.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "отрицает",
+   "не принимал"
+  ]
+ },
+ {
+  "id": "neg_nose_not_breathing_is_symptom",
+  "tags": [
+   "negation",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос не дышит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос не дышит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "носовое дыхание не нарушено",
+    "statement": "",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос не дышит",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "negation_not_in_evidence"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "не нарушено"
+  ]
+ },
+ {
+  "id": "neg_not_hearing_with_right_ear",
+  "tags": [
+   "negation",
+   "ent_ear",
+   "laterality"
+  ],
+  "transcript": [
+   "Правым ухом не слышу."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "снижение слуха справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Правым ухом не слышу",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Правым ухом не слышу",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "слух сохранён",
+    "statement": "",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Правым ухом не слышу",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "negation_not_in_evidence"
+   },
+   "complaints": "Снижение слуха справа.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "слева",
+   "сохранён"
+  ]
+ },
+ {
+  "id": "neg_runny_nose_not_going_away",
+  "tags": [
+   "negation",
+   "ent_nose",
+   "numbers"
+  ],
+  "transcript": [
+   "Насморк не проходит уже неделю."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Насморк не проходит",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "уже неделю",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "насморка нет",
+    "statement": "",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Насморк не проходит",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "negation_not_in_evidence"
+   },
+   "complaints": "Выделения из носа.",
+   "history": "Считает себя больным около 7 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "насморка нет"
+  ]
+ },
+ {
+  "id": "neg_no_effect_nothing_helps",
+  "tags": [
+   "negation",
+   "medication"
+  ],
+  "transcript": [
+   "Закапывал Називин.",
+   "Эффекта нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Закапывал Називин",
+    "id": "f1"
+   },
+   {
+    "category": "treatment_effect",
+    "value": "эффекта нет",
+    "statement": "Эффекта от применения препарата не отмечает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Закапывал Називин. Эффекта нет",
+    "id": "f2"
+   },
+   {
+    "category": "treatment_effect",
+    "value": "без эффекта",
+    "statement": "Без эффекта.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Эффекта нет",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "positive_fact_phrased_negative"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Називин. Эффекта от применения препарата не отмечает.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "Без эффекта"
+  ]
+ },
+ {
+  "id": "neg_antibiotic_negated_but_drops_taken",
+  "tags": [
+   "negation",
+   "medication"
+  ],
+  "transcript": [
+   "Таблетки не принимал, капал Називин."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "таблетки не принимал",
+    "statement": "Таблетки не принимал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Таблетки не принимал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "капал Називин",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "таблетки",
+    "statement": "Принимал таблетки.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Таблетки не принимал",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "evidence_negates_fact"
+   },
+   "complaints": "",
+   "history": "Таблетки не принимал. Самостоятельно применял Називин.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "Принимал таблетки"
+  ]
+ },
+ {
+  "id": "neg_but_clause_splits_scope",
+  "tags": [
+   "negation",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Температуры нет, но нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "но нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "повышения температуры не отмечает",
+    "statement": "Повышение температуры тела не отмечает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Температуры нет",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Повышение температуры тела не отмечает.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "neg_statement_drops_negation",
+  "tags": [
+   "negation"
+  ],
+  "transcript": [
+   "Температура была?",
+   "Температуры не было."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "температуры не было",
+    "statement": "Температура повышалась.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Температуры не было",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [],
+   "rejected": {
+    "f1": "statement_drops_negation"
+   },
+   "complaints": "",
+   "history": "",
+   "warning_codes": [
+    "insufficient_data"
+   ]
+  },
+  "must_not_contain": [
+   "повышалась"
+  ]
+ },
+ {
+  "id": "neg_polarity_flipped_fever_existed",
+  "tags": [
+   "negation",
+   "numbers"
+  ],
+  "transcript": [
+   "Температура была тридцать семь и пять."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "37,5 °C",
+    "statement": "Отмечал повышение температуры тела до 37,5 °C.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "тридцать семь и пять",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "температуры не было",
+    "statement": "Температуры не было.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Температура была",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "negation_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Отмечал повышение температуры тела до 37,5 °C.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "не было"
+  ]
+ },
+ {
+  "id": "neg_polarity_flipped_antibiotic_taken",
+  "tags": [
+   "negation",
+   "medication"
+  ],
+  "transcript": [
+   "Противовирусное пил, Арбидол."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Арбидол",
+    "statement": "Принимал Арбидол.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Противовирусное пил, Арбидол",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "противовирусные не принимал",
+    "statement": "Противовирусные не принимал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Противовирусное пил",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "negation_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Принимал Арбидол.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "не принимал"
+  ]
+ },
+ {
+  "id": "neg_never_had_fever_ni_razu",
+  "tags": [
+   "negation",
+   "numbers"
+  ],
+  "transcript": [
+   "Ни разу температуры не поднималось.",
+   "Болеет уже три дня, нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "повышения температуры не отмечал",
+    "statement": "Повышение температуры тела не отмечал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ни разу температуры не поднималось",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "нос заложен",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "уже три дня",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {},
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 3 дней. Повышение температуры тела не отмечал.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "neg_allergy_denied_but_no_allergological_history",
+  "tags": [
+   "negation",
+   "hallucination"
+  ],
+  "transcript": [
+   "Аллергия на лекарства есть?",
+   "Нет, аллергии нет.",
+   "Нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "other_history",
+    "value": "аллергические реакции на лекарства отрицает",
+    "statement": "Аллергические реакции на лекарства отрицает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Нет, аллергии нет",
+    "relevant_to_current": true,
+    "id": "f2"
+   },
+   {
+    "category": "other_history",
+    "value": "аллергологический анамнез не отягощён",
+    "statement": "Аллергологический анамнез не отягощён.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Нет, аллергии нет",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "forbidden_content"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Аллергические реакции на лекарства отрицает.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "не отягощ"
+  ]
+ },
+ {
+  "id": "neg_chronic_diseases_never_asked",
+  "tags": [
+   "negation",
+   "hallucination"
+  ],
+  "transcript": [
+   "Нос заложен уже неделю."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "уже неделю",
+    "id": "f2"
+   },
+   {
+    "category": "other_history",
+    "value": "хронические заболевания отрицает",
+    "statement": "",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f3"
+   },
+   {
+    "category": "other_history",
+    "value": "аллергологический анамнез не отягощён",
+    "statement": "",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f4"
+   },
+   {
+    "category": "treatment",
+    "value": "самостоятельно сосудосуживающие препараты не применял",
+    "statement": "",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "value_not_supported",
+    "f4": "value_not_supported",
+    "f5": "value_not_supported"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 7 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "отрицает",
+   "не отягощ"
+  ]
+ },
+ {
+  "id": "neg_cough_denied_and_hoarse_voice",
+  "tags": [
+   "negation",
+   "throat"
+  ],
+  "transcript": [
+   "Голос сел.",
+   "Кашель?",
+   "Кашля не было совсем."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "осиплость голоса",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Голос сел",
+    "id": "f1"
+   },
+   {
+    "category": "other_history",
+    "value": "кашель отрицает",
+    "statement": "Кашель отрицает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Кашля не было совсем",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "Осиплость голоса.",
+   "history": "Кашель отрицает.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "neg_ear_discharge_denied_answer_only",
+  "tags": [
+   "negation",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Ухо болит три дня.",
+   "Из уха не течёт?",
+   "Нет, сухое."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "три дня",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "Боль в ухе.",
+   "history": "Считает себя больным около 3 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "neg_denied_discharge_question_cited",
+  "tags": [
+   "negation",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен.",
+   "Выделения из носа есть?",
+   "Нет, выделений нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Нет, выделений нет",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "evidence_negates_fact"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "выделения из носа"
+  ]
+ },
+ {
+  "id": "neg_denied_cough_question_cited",
+  "tags": [
+   "negation",
+   "throat"
+  ],
+  "transcript": [
+   "Горло болит.",
+   "Кашель есть?",
+   "Нет, кашля нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло болит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "кашель",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Нет, кашля нет",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "evidence_negates_fact"
+   },
+   "complaints": "Боль в горле.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "кашель"
+  ]
+ },
+ {
+  "id": "neg_denied_antibiotic_question_cited",
+  "tags": [
+   "negation",
+   "medication"
+  ],
+  "transcript": [
+   "Таблетки принимали?",
+   "Таблетки не принимал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "таблетки не принимал",
+    "statement": "Таблетки не принимал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Таблетки не принимал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "таблетки",
+    "statement": "Принимал таблетки.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Таблетки не принимал",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "evidence_negates_fact"
+   },
+   "complaints": "",
+   "history": "Таблетки не принимал.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "Принимал таблетки"
+  ]
+ },
+ {
+  "id": "neg_denied_nausea_question_cited",
+  "tags": [
+   "negation",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Голова кружится.",
+   "Тошнит?",
+   "Нет, не тошнит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "головокружение",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Голова кружится",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "тошнота",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Нет, не тошнит",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "evidence_negates_fact"
+   },
+   "complaints": "Головокружение.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "тошнот"
+  ]
+ },
+ {
+  "id": "neg_scope_fever_denied_then_nose",
+  "tags": [
+   "negation",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Температуры не было, нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "повышения температуры не отмечал",
+    "statement": "Повышение температуры тела не отмечал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Температуры не было",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "нос заложен",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Повышение температуры тела не отмечал.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "neg_scope_cough_denied_then_throat",
+  "tags": [
+   "negation",
+   "throat"
+  ],
+  "transcript": [
+   "Кашля нет, горло болит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "горло болит",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "Боль в горле.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "neg_scope_without_fever_then_nose",
+  "tags": [
+   "negation",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Без температуры, но нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "нос заложен",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "neg_effect_did_not_help",
+  "tags": [
+   "negation",
+   "medication"
+  ],
+  "transcript": [
+   "Називин капал, он не помог."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Називин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment_effect",
+    "value": "Називин не помог",
+    "statement": "Називин не помог.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "он не помог",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Самостоятельно применял Називин. Називин не помог.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "neg_unknown_dont_know_is_not_denial_temperature",
+  "tags": [
+   "negation",
+   "hallucination"
+  ],
+  "transcript": [
+   "Температура была?",
+   "Не знаю, не мерил."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "повышения температуры не отмечал",
+    "statement": "Повышение температуры тела не отмечал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Не знаю, не мерил",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [],
+   "rejected": {
+    "f1": "negation_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "",
+   "warning_codes": [
+    "insufficient_data"
+   ]
+  },
+  "must_not_contain": [
+   "не отмечал"
+  ]
+ },
+ {
+  "id": "neg_unknown_dont_remember_is_not_denial_drug",
+  "tags": [
+   "negation",
+   "hallucination",
+   "medication"
+  ],
+  "transcript": [
+   "Антибиотики принимали?",
+   "Не помню."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "антибиотики не принимал",
+    "statement": "Антибиотики не принимал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Не помню",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [],
+   "rejected": {
+    "f1": "negation_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "",
+   "warning_codes": [
+    "insufficient_data"
+   ]
+  },
+  "must_not_contain": [
+   "не принимал"
+  ]
+ }
+]

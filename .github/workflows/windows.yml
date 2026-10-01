@@ -1,0 +1,142 @@
+name: Windows build, install and clean-profile test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.9.28"
+      - run: uv python install 3.12
+      - run: uv sync --frozen --python 3.12
+
+      - name: Unit + clinical tests on Windows
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: |
+          $paths = @("tests/unit", "tests/integration")
+          if (Test-Path tests/clinical) { $paths += "tests/clinical" }
+          uv run pytest @paths -q -p no:cacheprovider
+
+      - name: Locate redistributable MSVC runtime (app-local deployment)
+        run: |
+          $vs = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+          $crt = Get-ChildItem "$vs\VC\Redist\MSVC\*\x64\Microsoft.VC143.CRT" -Directory | Sort-Object FullName -Descending | Select-Object -First 1
+          Write-Host "CRT: $($crt.FullName)"
+          "MVA_VC_CRT_DIR=$($crt.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: PyInstaller build
+        run: uv run pyinstaller packaging/mva.spec --noconfirm --clean --log-level WARN
+
+      - name: Inno Setup installer
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress; }
+          & $iscc /DAppVersion=0.1.0 installer\mva.iss
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed" }
+          Get-Item dist\MedicalVisitAssistant-0.1.0-Setup.exe | Format-List Name, Length
+
+      - name: Install silently into a fresh per-user location
+        run: |
+          $dir = "$env:RUNNER_TEMP\install\MVA"
+          $p = Start-Process dist\MedicalVisitAssistant-0.1.0-Setup.exe -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/CURRENTUSER","/DIR=`"$dir`"","/LOG=`"$env:RUNNER_TEMP\install.log`"" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "installer exit $($p.ExitCode)" }
+          if (-not (Test-Path "$dir\MedicalVisitAssistant.exe")) { throw "exe not installed" }
+          "MVA_EXE=$dir\MedicalVisitAssistant.exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Get-ChildItem "$env:APPDATA\Microsoft\Windows\Start Menu\Programs" -Filter "Medical*"
+
+      - name: First run from installed app (clean profile, no Python on PATH)
+        run: |
+          $env:LOCALAPPDATA = "$env:RUNNER_TEMP\clean-profile\AppData\Local"
+          New-Item -ItemType Directory -Force $env:LOCALAPPDATA | Out-Null
+          $env:PATH = "C:\Windows\system32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0"
+          $p = Start-Process $env:MVA_EXE -ArgumentList "--self-test","--report","$env:RUNNER_TEMP\selftest-windows.json" -Wait -PassThru
+          Get-Content "$env:RUNNER_TEMP\selftest-windows.json"
+          Get-ChildItem "$env:LOCALAPPDATA\MedicalVisitAssistant\models"
+          if ($p.ExitCode -ne 0) { throw "self-test failed: $($p.ExitCode)" }
+          $r = Get-Content "$env:RUNNER_TEMP\selftest-windows.json" -Raw | ConvertFrom-Json
+          if ($r.steps[0].detail.status_before -ne "missing") { throw "model was not downloaded by the app on first run" }
+
+      - name: Virtual microphone (VB-CABLE) for a real WASAPI capture test
+        id: vbcable
+        continue-on-error: true
+        timeout-minutes: 6
+        run: |
+          Set-Service Audiosrv -StartupType Automatic; Start-Service Audiosrv; Start-Service AudioEndpointBuilder -ErrorAction SilentlyContinue
+          Invoke-WebRequest https://download.vb-audio.com/Download_CABLE/VBCABLE_Driver_Pack43.zip -OutFile $env:RUNNER_TEMP\vbcable.zip
+          Expand-Archive $env:RUNNER_TEMP\vbcable.zip -DestinationPath $env:RUNNER_TEMP\vbcable -Force
+          # Pre-trust the driver publisher so the silent install does not wait for a dialog.
+          $cat = Get-ChildItem $env:RUNNER_TEMP\vbcable -Filter *.cat | Select-Object -First 1
+          $cert = (Get-AuthenticodeSignature $cat.FullName).SignerCertificate
+          $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("TrustedPublisher", "LocalMachine")
+          $store.Open("ReadWrite"); $store.Add($cert); $store.Close()
+          $setup = Start-Process "$env:RUNNER_TEMP\vbcable\VBCABLE_Setup_x64.exe" -ArgumentList "-i","-h" -PassThru
+          if (-not $setup.WaitForExit(180000)) { $setup.Kill(); throw "VB-CABLE setup timed out" }
+          Start-Sleep -Seconds 10
+          uv run python -c "import sounddevice as sd; [print(i, d['name'], sd.query_hostapis(d['hostapi'])['name'], d['max_input_channels'], d['max_output_channels']) for i, d in enumerate(sd.query_devices())]"
+
+      - name: Microphone transcription through the installed app (WASAPI)
+        if: steps.vbcable.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 8
+        run: |
+          $env:LOCALAPPDATA = "$env:RUNNER_TEMP\clean-profile\AppData\Local"
+          $player = Start-Job -ScriptBlock {
+            param($ws)
+            Start-Sleep -Seconds 8
+            Set-Location $ws
+            uv run python -c "import sounddevice as sd, soundfile as sf; x, r = sf.read('src/mva/resources/test_audio/self_test_ru.wav', dtype='float32'); dev = [i for i, d in enumerate(sd.query_devices()) if 'CABLE Input' in d['name'] and d['max_output_channels'] > 0][0]; sd.play(x, r, device=dev, blocking=True)"
+          } -ArgumentList $env:GITHUB_WORKSPACE
+          $p = Start-Process $env:MVA_EXE -ArgumentList "--self-test","--mic-seconds","30","--mic-device","CABLE Output","--include-mic-text","--report","$env:RUNNER_TEMP\selftest-windows-mic.json" -Wait -PassThru
+          Receive-Job $player -Wait
+          Get-Content "$env:RUNNER_TEMP\selftest-windows-mic.json"
+          if ($p.ExitCode -ne 0) { throw "mic self-test failed: $($p.ExitCode)" }
+
+      - name: GUI smoke test of the installed app
+        timeout-minutes: 5
+        run: |
+          $env:LOCALAPPDATA = "$env:RUNNER_TEMP\clean-profile\AppData\Local"
+          $p = Start-Process $env:MVA_EXE -ArgumentList "--smoke-seconds","25" -Wait -PassThru
+          Get-Content "$env:LOCALAPPDATA\MedicalVisitAssistant\logs\mva.log" -Tail 30
+          if ($p.ExitCode -ne 0) { throw "GUI exit $($p.ExitCode)" }
+          $log = Get-Content "$env:LOCALAPPDATA\MedicalVisitAssistant\logs\mva.log" -Raw
+          if ($log -notmatch "GigaAM loaded") { throw "GUI did not load GigaAM" }
+          if ($log -match "Unhandled exception") { throw "GUI crashed" }
+          if ($log -match "[\u0400-\u04FF]") { throw "Cyrillic (possible PHI) found in log" }
+
+      - name: Uninstall silently
+        run: |
+          $dir = Split-Path $env:MVA_EXE
+          $p = Start-Process "$dir\unins000.exe" -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART" -Wait -PassThru
+          Start-Sleep -Seconds 5
+          if (Test-Path "$dir\MedicalVisitAssistant.exe") { throw "app files remain after uninstall" }
+          $data = "$env:RUNNER_TEMP\clean-profile\AppData\Local\MedicalVisitAssistant"
+          Write-Host "Kept user data (expected: settings + model):"; Get-ChildItem $data -Recurse -Depth 1 | Select-Object FullName
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-installer-and-evidence
+          retention-days: 14
+          path: |
+            dist/MedicalVisitAssistant-0.1.0-Setup.exe
+            ${{ runner.temp }}/selftest-windows.json
+            ${{ runner.temp }}/selftest-windows-mic.json
+            ${{ runner.temp }}/install.log

@@ -14,7 +14,8 @@ dist/
 # Secrets and local config
 .env
 .env.*
-credentials*
+/credentials*
+*.credentials.json
 *.key
 *.pem
 
