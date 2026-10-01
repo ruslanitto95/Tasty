@@ -38,6 +38,9 @@ dev = [
 ]
 
 [tool.uv]
+# GigaAM pins onnx==1.19.* for its optional ONNX export (unused here and excluded from the
+# build); override to a release without known vulnerabilities.
+override-dependencies = ["onnx>=1.22,<1.23"]
 required-environments = [
     "sys_platform == 'win32' and platform_machine == 'AMD64'",
     "sys_platform == 'linux' and platform_machine == 'x86_64'",
