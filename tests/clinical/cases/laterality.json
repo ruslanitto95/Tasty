@@ -1,0 +1,1508 @@
+[
+ {
+  "id": "lat_ear_pain_right",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Болит правое ухо."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Болит правое ухо",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Болит правое ухо",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в обоих ушах",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Болит правое ухо",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Боль в правом ухе.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в левом ухе",
+   "боль в обоих ушах"
+  ]
+ },
+ {
+  "id": "lat_ear_pain_left",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Левое ухо стреляет."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Левое ухо стреляет",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Левое ухо стреляет",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Боль в левом ухе.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в правом ухе"
+  ]
+ },
+ {
+  "id": "lat_ear_pain_both_oba",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Болят оба уха."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в обоих ушах",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Болят оба уха",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Болят оба уха",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Болят оба уха",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Боль в обоих ушах.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в правом ухе",
+   "боль в левом ухе"
+  ]
+ },
+ {
+  "id": "lat_ear_pain_right_adverb",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Ухо болит справа."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит справа",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит справа",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Боль в правом ухе.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в левом ухе"
+  ]
+ },
+ {
+  "id": "lat_ear_pain_left_adverb",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Ухо болит слева."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит слева",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит слева",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Боль в левом ухе.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в правом ухе"
+  ]
+ },
+ {
+  "id": "lat_ear_pain_both_s_dvuh_storon",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Болит с двух сторон, и уши, и вокруг."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в ушах с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Болит с двух сторон",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Болит с двух сторон",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Боль в ушах с обеих сторон.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в левом ухе"
+  ]
+ },
+ {
+  "id": "lat_hearing_loss_right",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Слышу хуже правым ухом."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "снижение слуха справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слышу хуже правым ухом",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слышу хуже правым ухом",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слышу хуже правым ухом",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Снижение слуха справа.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "снижение слуха слева",
+   "снижение слуха с обеих сторон"
+  ]
+ },
+ {
+  "id": "lat_hearing_loss_left",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Слух снизился слева."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "снижение слуха слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух снизился слева",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух снизился слева",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Снижение слуха слева.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "снижение слуха справа"
+  ]
+ },
+ {
+  "id": "lat_hearing_loss_both",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Слух упал с обеих сторон."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "снижение слуха с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух упал с обеих сторон",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух упал с обеих сторон",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух упал с обеих сторон",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Снижение слуха с обеих сторон.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "снижение слуха слева",
+   "снижение слуха справа"
+  ]
+ },
+ {
+  "id": "lat_tinnitus_left",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Звенит в левом ухе."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "шум в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Звенит в левом ухе",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "шум в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Звенит в левом ухе",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Шум в левом ухе.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "шум в правом ухе"
+  ]
+ },
+ {
+  "id": "lat_tinnitus_both_obeih",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Звон в обоих ушах."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "шум в обоих ушах",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Звон в обоих ушах",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "шум в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Звон в обоих ушах",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Шум в обоих ушах.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "шум в левом ухе"
+  ]
+ },
+ {
+  "id": "lat_nose_right_half",
+  "tags": [
+   "laterality",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Правая половина носа не дышит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Правая половина носа не дышит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Правая половина носа не дышит",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Правая половина носа не дышит",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Затруднение носового дыхания справа.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "затруднение носового дыхания слева",
+   "затруднение носового дыхания с обеих сторон"
+  ]
+ },
+ {
+  "id": "lat_nose_left_nostril",
+  "tags": [
+   "laterality",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Левая ноздря заложена."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "заложенность левой половины носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Левая ноздря заложена",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "заложенность правой половины носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Левая ноздря заложена",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Заложенность левой половины носа.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "заложенность правой половины носа"
+  ]
+ },
+ {
+  "id": "lat_nose_both_sides",
+  "tags": [
+   "laterality",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен с двух сторон."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен с двух сторон",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен с двух сторон",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Затруднение носового дыхания с обеих сторон.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "затруднение носового дыхания справа"
+  ]
+ },
+ {
+  "id": "lat_nose_both_ne_dyshat_oba",
+  "tags": [
+   "laterality",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Обе ноздри не дышат."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Обе ноздри не дышат",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Обе ноздри не дышат",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Затруднение носового дыхания с обеих сторон.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "затруднение носового дыхания слева"
+  ]
+ },
+ {
+  "id": "lat_nose_spoken_sprava",
+  "tags": [
+   "laterality",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен особенно справа."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания, преимущественно справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен особенно справа",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания, преимущественно слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен особенно справа",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Затруднение носового дыхания, преимущественно справа.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "затруднение носового дыхания, преимущественно слева"
+  ]
+ },
+ {
+  "id": "lat_throat_pain_right",
+  "tags": [
+   "laterality",
+   "throat"
+  ],
+  "transcript": [
+   "Горло болит справа."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло болит справа",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в горле слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло болит справа",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в горле с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло болит справа",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Боль в горле справа.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в горле слева",
+   "боль в горле с обеих сторон"
+  ]
+ },
+ {
+  "id": "lat_throat_pain_left_swallowing",
+  "tags": [
+   "laterality",
+   "throat"
+  ],
+  "transcript": [
+   "Слева больно глотать."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль при глотании слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слева больно глотать",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль при глотании справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слева больно глотать",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Боль при глотании слева.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль при глотании справа"
+  ]
+ },
+ {
+  "id": "lat_sinus_pain_left_cheek",
+  "tags": [
+   "laterality",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Болит левая щека и скула."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в области левой щеки",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Болит левая щека",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в области правой щеки",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Болит левая щека",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Боль в области левой щеки.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в области правой щеки"
+  ]
+ },
+ {
+  "id": "lat_ear_swapped_in_other_segment_not_evidence",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Правое ухо болит.",
+   "А левое?",
+   "Левое нормально."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Правое ухо болит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Правое ухо болит",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Боль в правом ухе.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в левом ухе"
+  ]
+ },
+ {
+  "id": "lat_invented_side_when_none_said",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Ухо болит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в обоих ушах",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Ухо болит",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "laterality_mismatch",
+    "f4": "laterality_mismatch"
+   },
+   "complaints": "Боль в ухе.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "правом",
+   "левом",
+   "обоих"
+  ]
+ },
+ {
+  "id": "lat_one_side_generalised_to_both",
+  "tags": [
+   "laterality",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен справа."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен справа",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен справа",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "двустороннее затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен справа",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch",
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Затруднение носового дыхания справа.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "обеих",
+   "двусторон"
+  ]
+ },
+ {
+  "id": "lat_both_sides_narrowed_to_one_oba",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Оба уха заложило."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "заложенность обоих ушей",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Оба уха заложило",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "заложенность правого уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Оба уха заложило",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Заложенность обоих ушей.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "правого"
+  ]
+ },
+ {
+  "id": "lat_both_sides_narrowed_to_one_right_and_left",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Уши заложило и справа и слева."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "заложенность ушей с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Уши заложило и справа и слева",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "заложенность левого уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Уши заложило и справа и слева",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "laterality_mismatch"
+   },
+   "complaints": "Заложенность ушей с обеих сторон.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "левого"
+  ]
+ },
+ {
+  "id": "lat_right_and_left_listed_separately_ok",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Справа ухо болит, а слева заложено."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Справа ухо болит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "заложенность левого уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "слева заложено",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Справа ухо болит, а слева заложено",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Боль в правом ухе; заложенность левого уха.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "боль в левом"
+  ]
+ },
+ {
+  "id": "lat_side_swapped_in_progression",
+  "tags": [
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Сначала заболело левое ухо, потом присоединилась боль в правом."
+  ],
+  "llm_facts": [
+   {
+    "category": "onset",
+    "value": "боль в левом ухе",
+    "statement": "Заболевание началось с боли в левом ухе.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "заболело левое ухо",
+    "id": "f1"
+   },
+   {
+    "category": "progression",
+    "value": "боль в правом ухе",
+    "statement": "Затем присоединилась боль в правом ухе.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "присоединилась боль в правом",
+    "id": "f2"
+   },
+   {
+    "category": "onset",
+    "value": "боль в правом ухе",
+    "statement": "Заболевание началось с боли в правом ухе.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "заболело левое ухо",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "",
+   "history": "Заболевание началось с боли в левом ухе. Затем присоединилась боль в правом ухе.",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": []
+ }
+]

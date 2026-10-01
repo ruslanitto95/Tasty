@@ -1,0 +1,369 @@
+[
+ {
+  "id": "ped_mother_nose_fever_nurofen",
+  "tags": [
+   "pediatrics",
+   "ent_nose",
+   "numbers",
+   "medication"
+  ],
+  "transcript": [
+   "Что у вас случилось?",
+   "У сына нос не дышит вторую неделю, сопли.",
+   "Температура была?",
+   "Два дня была тридцать восемь и пять.",
+   "Что давали?",
+   "Нурофен давала, когда выше тридцати восьми."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "У сына нос не дышит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "сопли",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "38,5 °C в течение двух дней",
+    "statement": "Со слов матери, в течение двух дней отмечалось повышение температуры тела до 38,5 °C.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Два дня была тридцать восемь и пять",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Нурофен",
+    "statement": "Со слов матери, ребёнку давали Нурофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5",
+     "s6"
+    ],
+    "evidence_quote": "Нурофен давала",
+    "id": "f4"
+   },
+   {
+    "category": "temperature",
+    "value": "39,5 °C",
+    "statement": "Температура до 39,5 °C.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "тридцать восемь и пять",
+    "id": "f5"
+   },
+   {
+    "category": "treatment",
+    "value": "Парацетамол",
+    "statement": "Ребёнку давали Парацетамол.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s6"
+    ],
+    "evidence_quote": "Нурофен давала",
+    "id": "f6"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "rejected": {
+    "f5": "temperature_mismatch",
+    "f6": "medication_not_in_evidence"
+   },
+   "complaints": "Затруднение носового дыхания; выделения из носа.",
+   "history": "Со слов матери, в течение двух дней отмечалось повышение температуры тела до 38,5 °C. Со слов матери, ребёнку давали Нурофен.",
+   "warning_codes": [
+    "medication_not_in_evidence",
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "39,5",
+   "Парацетамол"
+  ]
+ },
+ {
+  "id": "ped_child_and_parent_ear_left",
+  "tags": [
+   "pediatrics",
+   "ent_ear",
+   "laterality",
+   "numbers"
+  ],
+  "transcript": [
+   "Что случилось?",
+   "Он за левое ушко хватается и плачет.",
+   "С какого времени?",
+   "Со вчерашнего вечера.",
+   "Выделения из ушка были?",
+   "Нет, ничего не текло."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "за левое ушко хватается и плачет",
+    "id": "f1"
+   },
+   {
+    "category": "onset",
+    "value": "со вчерашнего вечера",
+    "statement": "Заболевание началось со вчерашнего вечера.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Со вчерашнего вечера",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "за левое ушко хватается",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "выделения из уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s6"
+    ],
+    "evidence_quote": "Нет, ничего не текло",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch",
+    "f4": "evidence_negates_fact"
+   },
+   "complaints": "Боль в левом ухе.",
+   "history": "Заболевание началось со вчерашнего вечера.",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "правом",
+   "выделения из уха"
+  ]
+ },
+ {
+  "id": "ped_child_answers_himself_snoring_parent_adds",
+  "tags": [
+   "pediatrics",
+   "ent_nose",
+   "numbers"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Нос не дышит.",
+   "Мама, дополните.",
+   "Он ночью храпит, с открытым ртом спит, уже три месяца.",
+   "Температура?",
+   "Нет, температуры нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нос не дышит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "храп во сне",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "ночью храпит",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 месяцев",
+    "statement": "Со слов матери, около 3 месяцев.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "уже три месяца",
+    "id": "f3"
+   },
+   {
+    "category": "temperature",
+    "value": "повышение температуры",
+    "statement": "Отмечалось повышение температуры тела.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s6"
+    ],
+    "evidence_quote": "Нет, температуры нет",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "evidence_negates_fact"
+   },
+   "complaints": "Затруднение носового дыхания; храп во сне.",
+   "history": "Со слов матери, около 3 месяцев.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "Отмечалось повышение"
+  ]
+ },
+ {
+  "id": "ped_toddler_cough_and_drops",
+  "tags": [
+   "pediatrics",
+   "throat",
+   "medication",
+   "negation"
+  ],
+  "transcript": [
+   "Что с ребёнком?",
+   "Кашляет третий день, горло красное, жалуется что больно.",
+   "Лечили чем-то?",
+   "Мирамистин брызгали, антибиотики не давали."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "кашель",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Кашляет",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "жалуется что больно",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "Мирамистин",
+    "statement": "Со слов матери, применяли Мирамистин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Мирамистин брызгали",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Ингалипт",
+    "statement": "Применяли Ингалипт.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Мирамистин брызгали",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "medication_not_in_evidence"
+   },
+   "complaints": "Кашель; боль в горле.",
+   "history": "Со слов матери, применяли Мирамистин.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Ингалипт"
+  ]
+ }
+]

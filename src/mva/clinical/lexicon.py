@@ -7,10 +7,34 @@ import difflib
 import json
 from dataclasses import dataclass
 from functools import lru_cache
+from itertools import pairwise
 from pathlib import Path
 
 from mva.clinical.text import norm, stem, tokens
 from mva.paths import resources_dir
+
+# Case endings that turn «Мирамистин» into «Мирамистином»: same drug, not an STT error.
+_MED_ENDINGS = (
+    "ами",
+    "ями",
+    "ом",
+    "ем",
+    "ой",
+    "ою",
+    "ов",
+    "ам",
+    "ям",
+    "ах",
+    "ях",
+    "а",
+    "у",
+    "ы",
+    "и",
+    "е",
+    "ю",
+    "я",
+)
+_MIN_FUZZY_LEN = 6
 
 
 @dataclass(frozen=True)
@@ -25,6 +49,20 @@ class MedicationMatch:
     surface: str  # as written in the text
     canonical: str  # lexicon name
     similarity: float
+    kind: str = (
+        "exact"  # exact | inflected (case form of a known name) | fuzzy (probable STT error)
+    )
+
+
+def _med_base(word: str) -> str:
+    for ending in _MED_ENDINGS:
+        if word.endswith(ending) and len(word) - len(ending) >= 5:
+            return word[: -len(ending)]
+    return word
+
+
+def _matches(token: str, patterns: list[str]) -> bool:
+    return any(token.startswith(p[:-1]) if p.endswith("*") else token == p for p in patterns)
 
 
 class Lexicon:
@@ -36,35 +74,65 @@ class Lexicon:
         ]
         self._med_forms: dict[str, str] = {}
         for med in self.medications:
-            for form in (med.name, med.inn, *med.aliases):
+            for form in (med.name, *med.aliases):
                 for part in form.split("+"):
                     if part.strip():
                         self._med_forms[norm(part.strip())] = med.name
-        self.ent_terms = [norm(t) for t in data.get("ent_terms", [])]  # type: ignore[union-attr]
-        self.diagnoses = [norm(t) for t in data.get("diagnoses", [])]  # type: ignore[union-attr]
-        self.risky_qualifiers = [norm(t) for t in data.get("risky_qualifiers", [])]  # type: ignore[union-attr]
-        self.forbidden_phrases = [norm(t) for t in data.get("forbidden_phrases", [])]  # type: ignore[union-attr]
+        # An INN is its own entity: «азитромицин» is never silently the same as «Сумамед».
+        for med in self.medications:
+            for part in med.inn.split("+"):
+                form = norm(part.strip())
+                if form and form not in self._med_forms:
+                    self._med_forms[form] = form
+        self._med_bases: dict[str, str] = {}
+        for form, canonical in self._med_forms.items():
+            if " " not in form:
+                self._med_bases.setdefault(_med_base(form), canonical)
+        self.ent_terms = _normed(data, "ent_terms")
+        self.diagnoses = _normed(data, "diagnoses")
+        self.risky_qualifiers = _normed(data, "risky_qualifiers")
+        self.forbidden_phrases = _normed(data, "forbidden_phrases")
         groups = data.get("synonym_groups", [])
         assert isinstance(groups, list)
         self.synonym_groups = [[norm(x) for x in g] for g in groups]
+        self.symptom_heads = _pattern_groups(data.get("symptom_heads", {}))
+        self.locations = _pattern_groups(data.get("locations", {}))
+        words = _normed(data, "non_medication_words")
+        self._common_words = [w for w in words if w]
+        for phrase in (*self.ent_terms, *self.diagnoses):
+            self._common_words.extend(tokens(phrase))
 
     # -- medications ---------------------------------------------------------------
-    def find_medications(self, text: str, cutoff: float = 0.86) -> list[MedicationMatch]:
-        """Exact and near-exact lexicon hits (single and two-word names)."""
+    def _is_common_word(self, cand: str) -> bool:
+        return any(_matches(w, self._common_words) for w in cand.split())
+
+    def find_medications(self, text: str, cutoff: float = 0.85) -> list[MedicationMatch]:
+        """Exact, inflected and (conservatively) near-exact lexicon hits."""
         toks = tokens(text)
         found: list[MedicationMatch] = []
         forms = list(self._med_forms)
-        candidates = toks + [f"{a} {b}" for a, b in zip(toks, toks[1:], strict=False)]
+        candidates = toks + [f"{a} {b}" for a, b in pairwise(toks)]
         for cand in candidates:
             if len(cand) < 4 or cand[0].isdigit():
                 continue
             if cand in self._med_forms:
                 found.append(MedicationMatch(cand, self._med_forms[cand], 1.0))
                 continue
-            close = difflib.get_close_matches(cand, forms, n=1, cutoff=cutoff)
-            if close:
-                ratio = difflib.SequenceMatcher(None, cand, close[0]).ratio()
-                found.append(MedicationMatch(cand, self._med_forms[close[0]], ratio))
+            if self._is_common_word(cand):
+                continue
+            if " " not in cand and _med_base(cand) in self._med_bases:
+                found.append(
+                    MedicationMatch(cand, self._med_bases[_med_base(cand)], 1.0, "inflected")
+                )
+                continue
+            if len(cand) < _MIN_FUZZY_LEN:
+                continue
+            close = difflib.get_close_matches(cand, forms, n=3, cutoff=cutoff)
+            for form in close:
+                if len(form) >= _MIN_FUZZY_LEN and abs(len(form) - len(cand)) <= 2:
+                    ratio = difflib.SequenceMatcher(None, cand, form).ratio()
+                    found.append(MedicationMatch(cand, self._med_forms[form], ratio, "fuzzy"))
+                    break
         # Keep the best hit per canonical name.
         best: dict[str, MedicationMatch] = {}
         for match in found:
@@ -72,9 +140,20 @@ class Lexicon:
                 best[match.canonical] = match
         return list(best.values())
 
-    def suggest_medication(self, word: str, cutoff: float = 0.7) -> str | None:
+    def unsupported_medications(self, text: str, reference: str) -> list[str]:
+        """Drug names in ``text`` that ``reference`` does not contain (fuzzy ones: verbatim only)."""
+        ref_tokens = set(tokens(reference))
+        ref_known = {m.canonical for m in self.find_medications(reference) if m.kind != "fuzzy"}
+        return [
+            m.surface
+            for m in self.find_medications(text)
+            if not all(part in ref_tokens for part in m.surface.split())
+            and not (m.kind != "fuzzy" and m.canonical in ref_known)
+        ]
+
+    def suggest_medication(self, word: str, cutoff: float = 0.85) -> str | None:
         w = norm(word)
-        if w in self._med_forms:
+        if w in self._med_forms or len(w) < _MIN_FUZZY_LEN or self._is_common_word(w):
             return None
         close = difflib.get_close_matches(w, list(self._med_forms), n=1, cutoff=cutoff)
         return self._med_forms[close[0]] if close else None
@@ -97,6 +176,22 @@ class Lexicon:
                 out.update(g for g in group if " " not in g)
         return out
 
+    def heads_in(self, text: str) -> set[str]:
+        """Symptom heads (pain, congestion, discharge, ...) named in the text."""
+        toks = tokens(text)
+        return {
+            n
+            for n, patterns in self.symptom_heads.items()
+            if any(_matches(t, patterns) for t in toks)
+        }
+
+    def locations_in(self, text: str) -> set[str]:
+        """Body regions (nose, throat, ear, ...) named in the text."""
+        toks = tokens(text)
+        return {
+            n for n, patterns in self.locations.items() if any(_matches(t, patterns) for t in toks)
+        }
+
     def diagnoses_in(self, text: str) -> list[str]:
         low = norm(text)
         return [
@@ -112,6 +207,17 @@ class Lexicon:
     def forbidden_in(self, text: str) -> list[str]:
         low = norm(text)
         return [p for p in self.forbidden_phrases if p in low]
+
+
+def _normed(data: dict[str, object], key: str) -> list[str]:
+    raw = data.get(key, [])
+    assert isinstance(raw, list)
+    return [norm(str(t)) for t in raw]
+
+
+def _pattern_groups(raw: object) -> dict[str, list[str]]:
+    assert isinstance(raw, dict)
+    return {str(k): [norm(p) for p in v] for k, v in raw.items()}
 
 
 def stems_overlap(a: set[str], b: set[str]) -> bool:

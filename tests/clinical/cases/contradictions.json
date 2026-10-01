@@ -1,0 +1,438 @@
+[
+ {
+  "id": "contr_duration_correction_marker_latest_wins",
+  "tags": [
+   "contradiction",
+   "numbers",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен.",
+   "Давно?",
+   "Три дня.",
+   "Нет, точнее пять дней."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Три дня",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 5 дней",
+    "statement": "Считает себя больным около 5 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "точнее пять дней",
+    "is_correction": true,
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f3"
+   ],
+   "rejected": {},
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 5 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "3 дней"
+  ]
+ },
+ {
+  "id": "contr_duration_two_answers_no_correction_both_withheld",
+  "tags": [
+   "contradiction",
+   "numbers",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен.",
+   "Давно?",
+   "Три дня.",
+   "А вообще, пять дней."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Три дня",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 5 дней",
+    "statement": "Считает себя больным около 5 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "пять дней",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": [
+    "duration_conflict"
+   ]
+  },
+  "must_not_contain": [
+   "3 дней",
+   "5 дней"
+  ]
+ },
+ {
+  "id": "contr_same_duration_week_and_seven_days_consistent",
+  "tags": [
+   "contradiction",
+   "numbers",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен.",
+   "Давно?",
+   "Неделю.",
+   "То есть семь дней, да."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Неделю",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 1 недели",
+    "statement": "Считает себя больным около 1 недели.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "семь дней",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 7 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "contr_laterality_two_sides_no_marker_withheld",
+  "tags": [
+   "contradiction",
+   "laterality",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Болит правое ухо.",
+   "Давно?",
+   "Два дня.",
+   "Левое тоже побаливает."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Болит правое ухо",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Левое тоже побаливает",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 дней",
+    "statement": "Считает себя больным около 2 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Два дня",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f3"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Считает себя больным около 2 дней.",
+   "warning_codes": [
+    "laterality_conflict"
+   ]
+  },
+  "must_not_contain": [
+   "правом",
+   "левом"
+  ]
+ },
+ {
+  "id": "contr_temperature_corrected",
+  "tags": [
+   "contradiction",
+   "numbers"
+  ],
+  "transcript": [
+   "Температура была?",
+   "Тридцать семь и пять.",
+   "Ой, нет, тридцать восемь и два."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "37,5 °C",
+    "statement": "Отмечал повышение температуры тела до 37,5 °C.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Тридцать семь и пять",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "38,2 °C",
+    "statement": "Отмечал повышение температуры тела до 38,2 °C.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "тридцать восемь и два",
+    "is_correction": true,
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Отмечал повышение температуры тела до 38,2 °C.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "37,5"
+  ]
+ },
+ {
+  "id": "contr_fever_denied_then_numeric_fever",
+  "tags": [
+   "contradiction",
+   "negation",
+   "numbers"
+  ],
+  "transcript": [
+   "Температура была?",
+   "Нет, не было.",
+   "Вечером было тридцать семь и пять."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "повышения температуры не отмечал",
+    "statement": "Повышение температуры тела не отмечал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Нет, не было",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "37,5 °C",
+    "statement": "Вечером отмечал повышение температуры тела до 37,5 °C.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "тридцать семь и пять",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [],
+   "rejected": {},
+   "complaints": "",
+   "history": "",
+   "warning_codes": [
+    "insufficient_data",
+    "polarity_conflict"
+   ]
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "contr_repeated_identical_answers_deduplicated",
+  "tags": [
+   "contradiction",
+   "ent_nose",
+   "numbers"
+  ],
+  "transcript": [
+   "Давно?",
+   "Неделя.",
+   "Так давно?",
+   "Неделя, говорю.",
+   "Нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Неделя",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Неделя, говорю",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f3"
+   ],
+   "rejected": {},
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 7 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ }
+]

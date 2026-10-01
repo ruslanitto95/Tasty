@@ -1,0 +1,460 @@
+[
+ {
+  "id": "therapy_previous_visit_and_ct",
+  "tags": [
+   "therapy",
+   "ent_nose",
+   "numbers"
+  ],
+  "transcript": [
+   "Раньше обращались к врачу?",
+   "Неделю назад был у терапевта, сказали ОРВИ.",
+   "Обследования делали?",
+   "КТ пазух делал в прошлом месяце."
+  ],
+  "llm_facts": [
+   {
+    "category": "previous_visit",
+    "value": "обращение к терапевту неделю назад",
+    "statement": "Неделю назад обращался к терапевту, со слов пациента установлено ОРВИ.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Неделю назад был у терапевта",
+    "id": "f1"
+   },
+   {
+    "category": "investigation",
+    "value": "КТ околоносовых пазух в прошлом месяце",
+    "statement": "В прошлом месяце выполнена КТ околоносовых пазух.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "КТ пазух делал в прошлом месяце",
+    "id": "f2"
+   },
+   {
+    "category": "investigation",
+    "value": "КТ: полипоз околоносовых пазух",
+    "statement": "По данным КТ — полипоз околоносовых пазух.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "КТ пазух делал",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "diagnosis_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Неделю назад обращался к терапевту, со слов пациента установлено ОРВИ. В прошлом месяце выполнена КТ околоносовых пазух.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "полипоз"
+  ]
+ },
+ {
+  "id": "therapy_course_stopped_effect_short",
+  "tags": [
+   "therapy",
+   "ent_nose",
+   "medication"
+  ],
+  "transcript": [
+   "Чем лечились?",
+   "Називин капал, помогает ненадолго.",
+   "Что-нибудь ещё?",
+   "Аквамарис промывал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Називин капал",
+    "id": "f1"
+   },
+   {
+    "category": "treatment_effect",
+    "value": "кратковременный эффект",
+    "statement": "Отмечает кратковременный эффект.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "помогает ненадолго",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "Аквамарис",
+    "statement": "Также применял Аквамарис.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Аквамарис промывал",
+    "id": "f3"
+   },
+   {
+    "category": "treatment_effect",
+    "value": "стойкое улучшение",
+    "statement": "Отмечает стойкое улучшение.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Аквамарис промывал",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "value_not_supported"
+   },
+   "complaints": "",
+   "history": "Самостоятельно применял Називин. Также применял Аквамарис. Отмечает кратковременный эффект.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "стойк"
+  ]
+ },
+ {
+  "id": "therapy_prior_antibiotic_course_amoxiclav",
+  "tags": [
+   "therapy",
+   "medication",
+   "numbers",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Что принимали от уха?",
+   "Амоксиклав пять дней пил, уху стало легче.",
+   "А капли?",
+   "Отипакс капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "treatment",
+    "value": "Амоксиклав в течение 5 дней",
+    "statement": "Принимал Амоксиклав в течение 5 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклав пять дней пил",
+    "id": "f1"
+   },
+   {
+    "category": "treatment_effect",
+    "value": "улучшение после приёма препарата",
+    "statement": "Отмечает улучшение после приёма препарата.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "стало легче",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "Отипакс",
+    "statement": "Также применял Отипакс.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Отипакс капал",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Амоксиклав в течение 7 дней",
+    "statement": "Принимал Амоксиклав в течение 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Амоксиклав пять дней пил",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "duration_mismatch"
+   },
+   "complaints": "",
+   "history": "Принимал Амоксиклав в течение 5 дней. Также применял Отипакс. Отмечает улучшение после приёма препарата.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "7 дней"
+  ]
+ },
+ {
+  "id": "therapy_nothing_taken_no_doctor_before",
+  "tags": [
+   "therapy",
+   "negation"
+  ],
+  "transcript": [
+   "Раньше лечили?",
+   "Нет, раньше не обращался, ничего не принимал."
+  ],
+  "llm_facts": [
+   {
+    "category": "previous_visit",
+    "value": "ранее за медицинской помощью не обращался",
+    "statement": "За медицинской помощью ранее не обращался.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "раньше не обращался",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "ничего не принимал",
+    "statement": "Лекарственные препараты не принимал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "ничего не принимал",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "Парацетамол",
+    "statement": "Принимал Парацетамол.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "ничего не принимал",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "medication_not_in_evidence"
+   },
+   "complaints": "",
+   "history": "Лекарственные препараты не принимал. За медицинской помощью ранее не обращался.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Парацетамол"
+  ]
+ },
+ {
+  "id": "therapy_symptom_earlier_but_resolved",
+  "tags": [
+   "therapy",
+   "throat",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Кашель был на прошлой неделе, уже прошёл.",
+   "А сейчас что беспокоит?",
+   "Горло першит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "кашель",
+    "statement": "Ранее отмечал кашель, к настоящему времени купировался.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Кашель был на прошлой неделе, уже прошёл",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "першение в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "current",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Горло першит",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "Першение в горле.",
+   "history": "Ранее отмечал кашель, к настоящему времени купировался.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "therapy_fever_earlier_resolved_now_normal",
+  "tags": [
+   "therapy",
+   "numbers"
+  ],
+  "transcript": [
+   "Температура была?",
+   "Три дня назад поднималась до тридцать восемь, сейчас нормальная.",
+   "Нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "38 °C три дня назад",
+    "statement": "Три дня назад отмечал повышение температуры тела до 38 °C.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Три дня назад поднималась до тридцать восемь",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "38,5 °C три дня назад",
+    "statement": "Три дня назад отмечал повышение температуры тела до 38,5 °C.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "поднималась до тридцать восемь",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "temperature_mismatch"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Три дня назад отмечал повышение температуры тела до 38 °C.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "38,5"
+  ]
+ },
+ {
+  "id": "therapy_temperature_present_but_not_measured",
+  "tags": [
+   "therapy",
+   "negation"
+  ],
+  "transcript": [
+   "Температура была?",
+   "Жар был, но градусником не мерила."
+  ],
+  "llm_facts": [
+   {
+    "category": "temperature",
+    "value": "повышение температуры",
+    "statement": "Отмечал повышение температуры тела.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Жар был",
+    "id": "f1"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {},
+   "complaints": "",
+   "history": "Отмечал повышение температуры тела.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ }
+]

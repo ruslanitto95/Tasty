@@ -1,0 +1,663 @@
+[
+ {
+  "id": "ear_acute_pain_right_fever_past",
+  "tags": [
+   "ent_ear",
+   "laterality",
+   "numbers",
+   "negation",
+   "medication"
+  ],
+  "transcript": [
+   "Что случилось?",
+   "Правое ухо болит со вчерашнего вечера.",
+   "Температура есть?",
+   "Вчера вечером было тридцать семь и восемь.",
+   "Выделения из уха были?",
+   "Нет, выделений нет.",
+   "Капли какие-нибудь закапывали?",
+   "Отипакс закапала."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Правое ухо болит",
+    "id": "f1"
+   },
+   {
+    "category": "onset",
+    "value": "со вчерашнего вечера",
+    "statement": "Заболевание началось со вчерашнего вечера.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "со вчерашнего вечера",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "37,8 °C вчера вечером",
+    "statement": "Вчера вечером отмечал повышение температуры тела до 37,8 °C.",
+    "polarity": "positive",
+    "temporality": "past",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Вчера вечером было тридцать семь и восемь",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Отипакс",
+    "statement": "Самостоятельно применял Отипакс.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s7",
+     "s8"
+    ],
+    "evidence_quote": "Отипакс закапала",
+    "id": "f4"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Правое ухо болит",
+    "id": "f5"
+   },
+   {
+    "category": "temperature",
+    "value": "38,5 °C",
+    "statement": "Отмечал температуру до 38,5 °C.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "тридцать семь и восемь",
+    "id": "f6"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "rejected": {
+    "f5": "laterality_mismatch",
+    "f6": "temperature_mismatch"
+   },
+   "complaints": "Боль в правом ухе.",
+   "history": "Заболевание началось со вчерашнего вечера. Вчера вечером отмечал повышение температуры тела до 37,8 °C. Самостоятельно применял Отипакс.",
+   "warning_codes": [
+    "laterality_mismatch",
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "левом",
+   "38,5"
+  ]
+ },
+ {
+  "id": "ear_hearing_loss_left",
+  "tags": [
+   "ent_ear",
+   "laterality",
+   "numbers"
+  ],
+  "transcript": [
+   "Слух упал на левое ухо.",
+   "Давно?",
+   "Месяц назад заметил."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "снижение слуха слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух упал на левое ухо",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 1 месяца",
+    "statement": "Считает себя больным около 1 месяца.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Месяц назад заметил",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух упал на левое ухо",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух упал на левое ухо",
+    "id": "f4"
+   },
+   {
+    "category": "complaint",
+    "value": "нейросенсорная тугоухость",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Слух упал",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch",
+    "f4": "laterality_mismatch",
+    "f5": "diagnosis_not_allowed"
+   },
+   "complaints": "Снижение слуха слева.",
+   "history": "Считает себя больным около 1 месяца.",
+   "warning_codes": [
+    "diagnosis_mentioned",
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "тугоух",
+   "справа",
+   "обеих"
+  ]
+ },
+ {
+  "id": "ear_tinnitus_right_two_days",
+  "tags": [
+   "ent_ear",
+   "laterality",
+   "numbers"
+  ],
+  "transcript": [
+   "Шум в правом ухе.",
+   "Давно?",
+   "Пару дней."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "шум в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Шум в правом ухе",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 дней",
+    "statement": "Считает себя больным около 2 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Пару дней",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "шум в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Шум в правом ухе",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "пульсирующий шум в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Шум в правом ухе",
+    "id": "f4"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 недель",
+    "statement": "Считает себя больным около 2 недель.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Пару дней",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch",
+    "f4": "unsupported_qualifier",
+    "f5": "duration_mismatch"
+   },
+   "complaints": "Шум в правом ухе.",
+   "history": "Считает себя больным около 2 дней.",
+   "warning_codes": [
+    "laterality_mismatch",
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "пульсир",
+   "левом",
+   "недель"
+  ]
+ },
+ {
+  "id": "ear_discharge_no_blood",
+  "tags": [
+   "ent_ear",
+   "negation"
+  ],
+  "transcript": [
+   "Из уха потекло вчера.",
+   "Кровь была?",
+   "Нет, крови не было."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "выделения из уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Из уха потекло",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "кровянистые выделения из уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Из уха потекло",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "unsupported_qualifier"
+   },
+   "complaints": "Выделения из уха.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "кров"
+  ]
+ },
+ {
+  "id": "ear_fullness_after_flight",
+  "tags": [
+   "ent_ear",
+   "laterality",
+   "numbers"
+  ],
+  "transcript": [
+   "Заложило ухо после перелёта.",
+   "Какое?",
+   "Левое.",
+   "Три дня назад летал."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "заложенность левого уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s3"
+    ],
+    "evidence_quote": "Заложило ухо Левое",
+    "id": "f1"
+   },
+   {
+    "category": "onset",
+    "value": "после перелёта",
+    "statement": "Заболевание началось после перелёта.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "после перелёта",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Три дня назад",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "заложенность правого уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s3"
+    ],
+    "evidence_quote": "Заложило ухо Левое",
+    "id": "f4"
+   },
+   {
+    "category": "duration",
+    "value": "около 30 дней",
+    "statement": "Считает себя больным около 30 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Три дня назад",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "laterality_mismatch",
+    "f5": "duration_mismatch"
+   },
+   "complaints": "Заложенность левого уха.",
+   "history": "Считает себя больным около 3 дней. Заболевание началось после перелёта.",
+   "warning_codes": [
+    "laterality_mismatch",
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "правого",
+   "30 дней"
+  ]
+ },
+ {
+  "id": "ear_dizziness_no_nausea",
+  "tags": [
+   "ent_ear",
+   "negation"
+  ],
+  "transcript": [
+   "Голова кружится.",
+   "Когда?",
+   "Когда голову поворачиваю.",
+   "Тошнит?",
+   "Нет, не тошнит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "головокружение",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Голова кружится",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "потеря сознания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Голова кружится",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported"
+   },
+   "complaints": "Головокружение.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "сознан"
+  ]
+ },
+ {
+  "id": "ear_both_ears_after_pool",
+  "tags": [
+   "ent_ear",
+   "laterality",
+   "numbers"
+  ],
+  "transcript": [
+   "Уши болят после бассейна.",
+   "Оба?",
+   "Да, оба.",
+   "Два дня."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в обоих ушах",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s3"
+    ],
+    "evidence_quote": "Уши болят Да, оба",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 дней",
+    "statement": "Считает себя больным около 2 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Два дня",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s3"
+    ],
+    "evidence_quote": "Уши болят Да, оба",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Боль в обоих ушах.",
+   "history": "Считает себя больным около 2 дней.",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "правом"
+  ]
+ },
+ {
+  "id": "ear_itching_and_water_in_ear_left",
+  "tags": [
+   "ent_ear",
+   "laterality",
+   "hallucination"
+  ],
+  "transcript": [
+   "Левое ухо чешется и как будто вода там.",
+   "Это после душа началось?",
+   "Да, вчера мылся.",
+   "Слышите хуже?",
+   "Нет, слышу нормально."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "зуд в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Левое ухо чешется",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "ощущение жидкости в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "как будто вода там",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "зуд в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Левое ухо чешется",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch"
+   },
+   "complaints": "Зуд в левом ухе; ощущение жидкости в левом ухе.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "правом"
+  ]
+ }
+]

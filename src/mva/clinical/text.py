@@ -238,9 +238,18 @@ _TENS = {
 }  # fmt: skip
 
 
+_NUMBER_WORD = "|".join(sorted([*_UNITS, *_TENS], key=len, reverse=True))
+_NUMBER_RANGE = re.compile(rf"\b((?:\d+|{_NUMBER_WORD}))-((?:\d+|{_NUMBER_WORD}))\b")
+
+
+def _split_number_ranges(text: str) -> str:
+    """'три-четыре' -> 'три - четыре' so that both ends are read as numbers."""
+    return _NUMBER_RANGE.sub(r"\1 - \2", text)
+
+
 def words_to_digits(text: str) -> str:
     """'тридцать семь и пять' -> '37.5'; '37 и 5' -> '37.5'; 'полтора' -> '1.5'."""
-    toks = norm(text).split()
+    toks = _split_number_ranges(norm(text)).split()
     out: list[str] = []
     i = 0
     while i < len(toks):
@@ -254,7 +263,7 @@ def words_to_digits(text: str) -> str:
                 consumed = 2
         elif tok in _UNITS:
             value = _UNITS[tok]
-        elif tok in ("полтора", "полторы"):
+        elif tok in ("полтора", "полторы", "полутора"):
             value = 1.5
         elif re.fullmatch(r"\d+(?:[.,]\d+)?", tok):
             value = float(tok.replace(",", "."))
@@ -313,38 +322,93 @@ _UNIT_DAYS = [
     (r"(?:год|года|лет)", 365.0),
     (r"час\w*", 1 / 24),
 ]
+# Genitive forms for the inverted colloquial order «дня три», «недели две».
+_UNIT_DAYS_GENITIVE = [
+    (r"(?:дня|дней|суток)", 1.0),
+    (r"(?:недели|недель)", 7.0),
+    (r"(?:месяца|месяцев)", 30.0),
+    (r"(?:года|лет)", 365.0),
+]
+_ORDINALS = {
+    "перв": 1, "втор": 2, "трет": 3, "четверт": 4, "пят": 5,
+    "шест": 6, "седьм": 7, "восьм": 8, "девят": 9, "десят": 10,
+}  # fmt: skip
+_ORDINAL_ENDINGS = r"(?:ый|ий|ая|ья|ую|ью|ой|ое|ье|ого|его|ом|ем)"
+_NUM = r"\d+(?:\.\d+)?"
+# «раз в 2 дня», «в день», «каждые два дня»: a frequency, not how long the illness lasts.
+_FREQUENCY_BEFORE = re.compile(r"(?:^|\s)(?:в|кажд\w+)\s+$")
+_NOT_A_BARE_DURATION = re.compile(
+    r"(?:^|\s)(?:несколько|пару|пара|кажд\w+|в|прошл\w*|следующ\w*)\s*$"
+)
+_DOSE_AFTER = r"(?!\s*(?:раз|капл|кап|таблет|мг|мл|штук|доз|упаков|ампул))"
 
 
-def durations(text: str) -> list[Duration]:
-    t = words_to_digits(text)
-    found: list[Duration] = []
-    taken: list[tuple[int, int]] = []
+def _scan_durations(t: str) -> list[tuple[Duration, tuple[int, int]]]:
+    """Duration expressions of an already digit-converted, normalised text with their spans."""
+    found: list[tuple[Duration, tuple[int, int]]] = []
+    frequencies: list[tuple[int, int]] = []
+
+    def taken(pos: int) -> bool:
+        return any(a <= pos < b for _, (a, b) in found) or any(a <= pos < b for a, b in frequencies)
+
+    ordinals = "|".join(_ORDINALS)
+    for unit, days in _UNIT_DAYS[:5]:
+        for m in re.finditer(rf"\b({ordinals}){_ORDINAL_ENDINGS}\s+({unit})\b", t):
+            found.append((Duration(_ORDINALS[m.group(1)] * days), m.span()))
     for unit, days in _UNIT_DAYS:
-        for m in re.finditer(rf"(\d+(?:\.\d+)?)\s*(?:-|–|до)?\s*(?:\d+\s*)?{unit}\b", t):
-            found.append(Duration(float(m.group(1)) * days))
-            taken.append(m.span())
-    for m in re.finditer(r"\bполгода\b", t):
-        found.append(Duration(182.0))
-        taken.append(m.span())
+        for m in re.finditer(
+            rf"(?<![\d.,])({_NUM})(?:\s*(?:-|–|до|или)\s*({_NUM}))?\s*{unit}\b", t
+        ):
+            if taken(m.start()):
+                continue
+            if _FREQUENCY_BEFORE.search(t[: m.start()]):
+                frequencies.append(m.span())
+                continue
+            first = float(m.group(1))
+            last = float(m.group(2)) if m.group(2) else first
+            found.append((Duration((first + last) / 2 * days), m.span()))
+    for unit, days in _UNIT_DAYS_GENITIVE:
+        for m in re.finditer(rf"(?<![\w.])({unit})\s+(\d{{1,2}})(?![.,]?\d)\b{_DOSE_AFTER}", t):
+            if taken(m.start()) or not 1 <= float(m.group(2)) <= 12:
+                continue
+            found.append((Duration(float(m.group(2)) * days), m.span()))
+    for m in re.finditer(r"\bпол(?:года|угода)\b", t):
+        found.append((Duration(182.0), m.span()))
     # Bare unit without a number: "неделю", "месяц", "сутки".
     for unit, days in _UNIT_DAYS[:4]:
         for m in re.finditer(
             rf"(?<![\w.])(?:уже\s+|около\s+|почти\s+|целую\s+|с\s+)?({unit})\b", t
         ):
-            if any(a <= m.start(1) < b for a, b in taken):
+            if taken(m.start(1)) or _NOT_A_BARE_DURATION.search(t[: m.start(1)]):
                 continue
-            if re.search(
-                r"(несколько|пару|пара|каждый|каждую|в\s+день|прошл\w*|следующ\w*)\s*$",
-                t[: m.start(1)],
-            ):
-                continue
-            found.append(Duration(days))
+            found.append((Duration(days), m.span(1)))
     return found
 
 
+def durations(text: str) -> list[Duration]:
+    return [d for d, _ in _scan_durations(words_to_digits(text))]
+
+
+def strip_durations(text: str) -> str:
+    """Digit-converted text with every duration expression removed (dose numbers remain)."""
+    t = words_to_digits(text)
+    for _, (a, b) in sorted((s for s in _scan_durations(t)), key=lambda x: -x[1][0]):
+        t = f"{t[:a]} {t[b:]}"
+    return t
+
+
 # ---- laterality --------------------------------------------------------------
-_RIGHT = re.compile(r"\b(справа|право\w*|прав(?:ый|ая|ое|ого|ой|ом|ому|ую|ые|ых|ым|ыми))\b")
-_LEFT = re.compile(r"\b(слева|лево\w*|лев(?:ый|ая|ое|ого|ой|ом|ому|ую|ые|ых|ым|ыми))\b")
+_SIDE_ENDINGS = r"(?:ый|ая|ое|ого|ой|ом|ому|ую|ые|ых|ым|ыми)"
+_RIGHT_WORD = rf"(?:справа|прав{_SIDE_ENDINGS})"
+_LEFT_WORD = rf"(?:слева|лев{_SIDE_ENDINGS})"
+_RIGHT = re.compile(rf"\b{_RIGHT_WORD}\b")
+_LEFT = re.compile(rf"\b{_LEFT_WORD}\b")
+_RIGHT_AND_LEFT = re.compile(
+    rf"\b{_RIGHT_WORD}\s*,?\s*и\s+{_LEFT_WORD}\b|\b{_LEFT_WORD}\s*,?\s*и\s+{_RIGHT_WORD}\b"
+)
+_SIDE_COMMA_AND = re.compile(
+    rf"\b({_RIGHT_WORD}|{_LEFT_WORD})\s*,\s*и\s+(?={_RIGHT_WORD}|{_LEFT_WORD})"
+)
 _BOTH = re.compile(
     r"\b(с\s+обеих\s+сторон|с\s+двух\s+сторон|обе\s+стороны|двусторонн\w*|оба\s+уха|"
     r"обоих\s+уш\w*|обе\s+ноздри|в\s+обоих|обеих|оба)\b"
@@ -360,52 +424,137 @@ def laterality(text: str) -> set[str]:
         sides.add("right")
     if _LEFT.search(t):
         sides.add("left")
-    if {"right", "left"} <= sides and re.search(
-        r"(справа|прав\w*)\s+и\s+(слева|лев\w*)|(слева|лев\w*)\s+и\s+(справа|прав\w*)", t
-    ):
+    if {"right", "left"} <= sides and _RIGHT_AND_LEFT.search(t):
         sides.add("bilateral")
     return sides
 
 
 def laterality_compatible(claimed: set[str], evidence: set[str]) -> bool:
-    """A claimed side must be stated in the evidence; "both sides" == "right and left"."""
+    """A claimed side must be stated in the evidence and must not narrow «both sides»."""
     if not claimed:
         return True
     ev = set(evidence)
     if {"right", "left"} <= ev:
         ev.add("bilateral")
     cl = set(claimed)
-    if "bilateral" in ev and {"right", "left"} <= cl:
-        cl = (cl - {"right", "left"}) | {"bilateral"}
+    if "bilateral" in ev:
+        if {"right", "left"} <= cl:
+            cl = (cl - {"right", "left"}) | {"bilateral"}
+        if cl != {"bilateral"}:
+            return False
+    elif "bilateral" in cl and {"right", "left"} <= ev:
+        cl = (cl - {"bilateral"}) | {"right", "left"}
     return cl <= ev
+
+
+def laterality_compatible_any(claimed: set[str], evidence_sets: list[set[str]]) -> bool:
+    """Claim must fit one evidence set; sides spread over separate sets may be combined
+    only when none of them says «both sides»."""
+    if not claimed:
+        return True
+    if any(laterality_compatible(claimed, ev) for ev in evidence_sets):
+        return True
+    union: set[str] = set().union(*evidence_sets) if evidence_sets else set()
+    if "bilateral" in union:
+        return False
+    return claimed <= union and "bilateral" not in claimed
 
 
 # ---- negation ----------------------------------------------------------------
 # "не + verb" phrases that describe a PRESENT symptom rather than its absence.
 _SYMPTOM_NEG = r"(?:дыш\w*|слыш\w*|проход\w*|мог\w*|могу|чувству\w*|чувств\w*|спит|сплю|спал\w*|ест|ем|глота\w*|прош\w*|помога\w*|помог\w*|различа\w*|разговарива\w*|сморка\w*|отход\w*)"
-_ABSENCE = re.compile(
-    rf"\bне\s+(?!{_SYMPTOM_NEG}\b)[а-я]+|\bнет\b|\bотрица\w*|\bотсутств\w*|\bникак\w*|\bни\s+разу\b|\bбез\s+[а-я]+"
+# "не знаю / не помню / не мерил / не уточнено / не меньше": uncertainty or a qualifier, never absence.
+_NOT_ABSENCE = (
+    r"(?:" + _SYMPTOM_NEG + r"|знаю|знает|знаем|помню|помнит|помним|вспомню|вспомнит|уверен\w*"
+    r"|мерил\w*|измерял\w*|измеряла|замерял\w*|уточнен\w*|уточнял\w*|указан\w*|запомнил\w*"
+    r"|меньше|менее|больше|более)"
 )
+_ABSENCE = re.compile(
+    rf"\bне\s+(?!{_NOT_ABSENCE}\b)[а-я]+|\bнет\b|\bнету\b|\bотрица\w*|\bотсутств\w*|\bникак\w*"
+    r"|\bни\s+разу\b|\bбез\s+[а-я]+"
+)
+_CORRECTION_OPENER = re.compile(
+    r"\bнет,\s*(?=точнее|вернее|то есть|на самом деле|ой\b|извин|ошиб|не\s+[а-я]+,?\s+а\s)"
+)
+_NEGATION_WORD_PREFIXES = ("отрица", "отсутств", "никак", "никогд", "нету")
+_CLAUSE_SPLIT = re.compile(r"([.!?;…]+|,|\s(?:а|но|зато|однако)\s)")
+
+
+def _strip_correction_opener(t: str) -> str:
+    """«Нет, точнее левое» corrects an earlier answer; its «нет» is not a denial."""
+    return _CORRECTION_OPENER.sub("", t)
 
 
 def has_absence_negation(text: str) -> bool:
-    return bool(_ABSENCE.search(norm(text)))
+    return bool(_ABSENCE.search(_strip_correction_opener(norm(text))))
+
+
+def _is_negation_token(tokens_: list[str], i: int) -> bool:
+    tok = tokens_[i]
+    if tok in ("нет", "нету", "без") or tok.startswith(_NEGATION_WORD_PREFIXES):
+        return True
+    return tok == "не" and i + 1 < len(tokens_) and not re.fullmatch(_NOT_ABSENCE, tokens_[i + 1])
+
+
+def _content_tokens(toks: list[str]) -> list[str]:
+    return [
+        t
+        for t in toks
+        if t not in STOPWORDS
+        and t != "без"
+        and not t[0].isdigit()
+        and not t.startswith(_NEGATION_WORD_PREFIXES)
+    ]
+
+
+def split_clauses(text: str) -> list[str]:
+    """Normalised clauses split at sentence ends, commas and «а/но».
+
+    A lone word before a comma («Кашля, температуры нет») stays with the next clause.
+    """
+    t = _SIDE_COMMA_AND.sub(r"\1 и ", _strip_correction_opener(norm(text)))
+    pieces = _CLAUSE_SPLIT.split(t)
+    clauses: list[str] = []
+    carry = ""
+    for index in range(0, len(pieces), 2):
+        piece = f"{carry} {pieces[index].strip()}".strip()
+        carry = ""
+        sep = pieces[index + 1] if index + 1 < len(pieces) else ""
+        if (
+            sep == ","
+            and len(_content_tokens(tokens(piece))) == 1
+            and not has_absence_negation(piece)
+        ):
+            carry = piece
+            continue
+        if piece:
+            clauses.append(piece)
+    if carry:
+        clauses.append(carry)
+    return clauses
 
 
 def negated_stems(text: str, window: int = 3) -> set[str]:
-    """Content stems within ``window`` tokens of an absence negation."""
-    t = norm(text)
-    toks = tokens(t)
+    """Content stems within ``window`` tokens of an absence negation, inside the same clause.
+
+    A bare answer («Нет.», «Не было.») negates the clause before it (the doctor's question).
+    """
     result: set[str] = set()
-    for i, tok in enumerate(toks):
-        is_neg = tok in ("нет", "без") or tok.startswith(("отрица", "отсутств", "никак"))
-        if tok == "не" and i + 1 < len(toks) and not re.fullmatch(_SYMPTOM_NEG, toks[i + 1]):
-            is_neg = True
-        if not is_neg:
+    previous = ""
+    for clause in split_clauses(text):
+        toks = tokens(clause)
+        positions = [i for i in range(len(toks)) if _is_negation_token(toks, i)]
+        if not positions:
+            previous = clause
             continue
-        for j in range(max(0, i - window), min(len(toks), i + window + 1)):
-            if j != i and toks[j] not in STOPWORDS and not toks[j][0].isdigit():
-                result.add(stem(toks[j]))
+        if not _content_tokens(toks):
+            result |= {stem(t) for t in _content_tokens(tokens(previous))}
+            continue
+        for i in positions:
+            for j in range(max(0, i - window), min(len(toks), i + window + 1)):
+                if j != i and toks[j] in _content_tokens([toks[j]]):
+                    result.add(stem(toks[j]))
+        previous = clause
     return result
 
 
@@ -421,6 +570,45 @@ def has_correction_marker(text: str) -> bool:
 
 def is_question(text: str) -> bool:
     return text.strip().endswith("?")
+
+
+_QUESTION_STARTS = frozenset(
+    [
+        "что",
+        "как",
+        "где",
+        "когда",
+        "сколько",
+        "чем",
+        "почему",
+        "зачем",
+        "какой",
+        "какая",
+        "какие",
+        "какое",
+        "куда",
+        "откуда",
+        "давно",
+        "часто",
+        "есть",
+        "были",
+        "принимали",
+        "пробовали",
+        "лечились",
+        "лечили",
+        "делали",
+        "беспокоит",
+    ]
+)
+
+
+def looks_like_question(text: str) -> bool:
+    """A doctor's question, also when the ASR dropped the question mark."""
+    t = norm(text)
+    if t.endswith("?"):
+        return True
+    words = t.split()
+    return bool(words) and ("ли" in tokens(t) or words[0].strip(",") in _QUESTION_STARTS)
 
 
 def split_sentences(text: str) -> list[str]:

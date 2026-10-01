@@ -1,0 +1,881 @@
+[
+ {
+  "id": "noise_small_talk_then_ear",
+  "tags": [
+   "conversation_noise",
+   "ent_ear",
+   "hallucination"
+  ],
+  "transcript": [
+   "Здравствуйте, как отпуск?",
+   "Отлично, ездили на море, вода тёплая.",
+   "Ну, на что жалуетесь?",
+   "Ухо закладывает после моря, правое."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "заложенность правого уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Ухо закладывает после моря, правое",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "головная боль",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "ездили на море",
+    "id": "f2"
+   },
+   {
+    "category": "other_history",
+    "value": "состояние удовлетворительное",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "как отпуск",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported",
+    "f3": "evidence_is_question"
+   },
+   "complaints": "Заложенность правого уха.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "отпуск",
+   "головн"
+  ]
+ },
+ {
+  "id": "noise_phone_call_in_the_middle",
+  "tags": [
+   "conversation_noise",
+   "ent_nose",
+   "numbers"
+  ],
+  "transcript": [
+   "Что вас беспокоит?",
+   "Секунду, телефон. Алло, да, я на приёме, перезвоню через час.",
+   "Извините. Нос заложен уже неделю."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "уже неделю",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 1 часа",
+    "statement": "Считает себя больным около 1 часа.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "перезвоню через час",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "duration_mismatch"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 7 дней.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "часа"
+  ]
+ },
+ {
+  "id": "noise_doctor_talks_to_nurse",
+  "tags": [
+   "conversation_noise",
+   "ent_nose",
+   "numbers"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Нос заложен, давит в переносице.",
+   "Наташ, принеси, пожалуйста, карту.",
+   "Извините. И давно это у вас?",
+   "Две недели."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "ощущение давления в переносице",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "давит в переносице",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 недель",
+    "statement": "Считает себя больным около 2 недель.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4",
+     "s5"
+    ],
+    "evidence_quote": "Две недели",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "принеси, пожалуйста, карту",
+    "id": "f4"
+   },
+   {
+    "category": "complaint",
+    "value": "давящая боль в переносице",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "давит в переносице",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "value_not_supported",
+    "f5": "unsupported_qualifier"
+   },
+   "complaints": "Затруднение носового дыхания; ощущение давления в переносице.",
+   "history": "Считает себя больным около 2 недель.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "давящ",
+   "ухе"
+  ]
+ },
+ {
+  "id": "noise_repeated_question_same_answer",
+  "tags": [
+   "conversation_noise",
+   "ent_nose",
+   "numbers"
+  ],
+  "transcript": [
+   "Нос давно заложен?",
+   "Чего?",
+   "Давно, говорю, заложен нос?",
+   "А, да, десять дней.",
+   "Десять дней, понятно."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "заложен нос А да десять дней",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 10 дней",
+    "statement": "Считает себя больным около 10 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "десять дней",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 10 дней",
+    "statement": "Считает себя больным около 10 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4",
+     "s5"
+    ],
+    "evidence_quote": "Десять дней, понятно",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос давно заложен",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f4": "evidence_is_question"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 10 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "noise_doctor_interrupts_mid_sentence",
+  "tags": [
+   "conversation_noise",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Что вас бес—",
+   "Нос заложен, и из него—",
+   "Да-да, дальше.",
+   "—течёт, и горло першит.",
+   "С какого времени?",
+   "Со вторника."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s4"
+    ],
+    "evidence_quote": "из него течёт",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "першение в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "горло першит",
+    "id": "f3"
+   },
+   {
+    "category": "onset",
+    "value": "со вторника",
+    "statement": "Заболевание началось со вторника.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5",
+     "s6"
+    ],
+    "evidence_quote": "Со вторника",
+    "id": "f4"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Да-да, дальше",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "rejected": {
+    "f5": "value_not_supported"
+   },
+   "complaints": "Затруднение носового дыхания; выделения из носа; першение в горле.",
+   "history": "Заболевание началось со вторника.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "ухе"
+  ]
+ },
+ {
+  "id": "noise_very_talkative_patient",
+  "tags": [
+   "conversation_noise",
+   "ent_ear",
+   "numbers",
+   "medication"
+  ],
+  "transcript": [
+   "Ой, доктор, вы не представляете, что со мной было!",
+   "Я в понедельник с внуком гуляла, ветер такой, а я шапку не надела.",
+   "А дочка моя говорит, надень, мама, надень, а я думаю, что тут такого, погода тёплая.",
+   "И вот во вторник утром просыпаюсь, а у меня левое ухо болит.",
+   "Ну я думаю, пройдёт, чаю попила с малиной, потом закапала Отипакс, он у меня с прошлого раза остался.",
+   "А сейчас уже четверг, и всё болит, и болит.",
+   "Ещё соседка говорит, что у неё тоже так было, а потом оказалось что-то серьёзное, я так переживаю.",
+   "Вот такая история у меня."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "левое ухо болит",
+    "id": "f1"
+   },
+   {
+    "category": "onset",
+    "value": "со вторника утром",
+    "statement": "Заболевание началось во вторник утром.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "во вторник утром",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "Отипакс",
+    "statement": "Самостоятельно применяла Отипакс.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5"
+    ],
+    "evidence_quote": "закапала Отипакс",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Нурофен",
+    "statement": "Принимала Нурофен.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5"
+    ],
+    "evidence_quote": "чаю попила с малиной",
+    "id": "f4"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "левое ухо болит",
+    "id": "f5"
+   },
+   {
+    "category": "complaint",
+    "value": "головокружение",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s7"
+    ],
+    "evidence_quote": "переживаю",
+    "id": "f6"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "medication_not_in_evidence",
+    "f5": "laterality_mismatch",
+    "f6": "value_not_supported"
+   },
+   "complaints": "Боль в левом ухе.",
+   "history": "Заболевание началось во вторник утром. Самостоятельно применяла Отипакс.",
+   "warning_codes": [
+    "laterality_mismatch",
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "Нурофен",
+   "правом",
+   "головокруж"
+  ]
+ },
+ {
+  "id": "noise_monosyllabic_answers",
+  "tags": [
+   "conversation_noise",
+   "ent_ear",
+   "laterality",
+   "numbers"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Ухо.",
+   "Какое?",
+   "Левое.",
+   "Болит?",
+   "Да.",
+   "Давно?",
+   "Неделя."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s4",
+     "s6"
+    ],
+    "evidence_quote": "Ухо Левое Да",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s7",
+     "s8"
+    ],
+    "evidence_quote": "Давно? Неделя",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s4",
+     "s6"
+    ],
+    "evidence_quote": "Ухо Левое Да",
+    "id": "f3"
+   },
+   {
+    "category": "temperature",
+    "value": "38 °C",
+    "statement": "Температура до 38 °C.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s8"
+    ],
+    "evidence_quote": "Неделя",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch",
+    "f4": "temperature_mismatch"
+   },
+   "complaints": "Боль в левом ухе.",
+   "history": "Считает себя больным около 7 дней.",
+   "warning_codes": [
+    "laterality_mismatch",
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "правом",
+   "38"
+  ]
+ },
+ {
+  "id": "noise_monosyllabic_negatives_only",
+  "tags": [
+   "conversation_noise",
+   "negation"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Горло.",
+   "Температура?",
+   "Нет.",
+   "Кашель?",
+   "Нет."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Что беспокоит? Горло",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "температуру отрицает",
+    "statement": "Температуру отрицает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Нет",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported"
+   },
+   "complaints": "Боль в горле.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "отрицает"
+  ]
+ },
+ {
+  "id": "noise_elderly_repeating_hearing_loss",
+  "tags": [
+   "conversation_noise",
+   "ent_ear",
+   "laterality",
+   "numbers"
+  ],
+  "transcript": [
+   "Что вас беспокоит?",
+   "Что? Не слышу вас.",
+   "Что вас беспокоит?",
+   "Слышу плохо, говорю. Левым ухом совсем плохо.",
+   "Давно?",
+   "Два года уже, как слух падает."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "снижение слуха слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Левым ухом совсем плохо",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Слышу плохо",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 лет",
+    "statement": "Считает себя больным около 2 лет.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5",
+     "s6"
+    ],
+    "evidence_quote": "Два года уже",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "снижение слуха справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Левым ухом совсем плохо",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "laterality_mismatch"
+   },
+   "complaints": "Снижение слуха слева; снижение слуха.",
+   "history": "Считает себя больным около 2 лет.",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "справа"
+  ]
+ },
+ {
+  "id": "noise_patient_corrects_laterality_mid_answer",
+  "tags": [
+   "conversation_noise",
+   "ent_ear",
+   "laterality",
+   "contradiction"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Болит правое ухо.",
+   "Нет, точнее левое, извините."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в правом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Болит правое ухо",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в левом ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "точнее левое",
+    "is_correction": true,
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "Боль в левом ухе.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "правом"
+  ]
+ },
+ {
+  "id": "noise_background_tv_and_kids",
+  "tags": [
+   "conversation_noise",
+   "hallucination"
+  ],
+  "transcript": [
+   "Тише, дети! Простите. Так, на что жалуетесь?",
+   "Горло болит три дня.",
+   "Маша, не трогай! Да, вот так."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Горло болит",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "три дня",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "головная боль",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "не трогай",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "value_not_supported"
+   },
+   "complaints": "Боль в горле.",
+   "history": "Считает себя больным около 3 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "головн"
+  ]
+ }
+]

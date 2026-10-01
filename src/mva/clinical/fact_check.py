@@ -11,10 +11,11 @@ from mva.clinical.text import (
     durations,
     has_absence_negation,
     laterality,
-    laterality_compatible,
+    laterality_compatible_any,
     norm,
     numbers,
     split_sentences,
+    strip_durations,
     temperatures,
     tokens,
 )
@@ -69,10 +70,8 @@ class FinalFactChecker:
             ref_durs, text_durs = durations(ref), durations(text)
             if any(not any(d.close_to(t) for t in text_durs) for d in ref_durs):
                 out.append(Violation(section, text, "duration omitted"))
-            text_tokens = set(tokens(text))
-            for med in self.lexicon.find_medications(ref):
-                if not all(part in text_tokens for part in med.surface.split()):
-                    out.append(Violation(section, text, f"medication omitted: {med.surface}"))
+            for surface in self.lexicon.unsupported_medications(ref, text):
+                out.append(Violation(section, text, f"medication omitted: {surface}"))
             if has_absence_negation(ref) and not has_absence_negation(text):
                 out.append(Violation(section, text, "negation omitted"))
         return out
@@ -86,11 +85,13 @@ class FinalFactChecker:
         out: list[Violation] = []
         all_text = " ".join(self._fact_text(f) for f in facts)
         sent_stems = content_stems(sentence) - PHRASING_STEMS
+        # A sentence made only of phrasing words («Эффекта … не отмечает») is matched on all stems.
+        match_stems = sent_stems or content_stems(sentence)
         supporting = [
             f
             for f in facts
             if stems_overlap(
-                sent_stems,
+                match_stems,
                 self.lexicon.expand_stems(content_stems(self._fact_text(f)), self._fact_text(f)),
             )
         ]
@@ -102,16 +103,30 @@ class FinalFactChecker:
             covered = sum(1 for s in sent_stems if stems_overlap({s}, support_stems))
             if covered / len(sent_stems) < self.min_coverage:
                 out.append(Violation(section, sentence, "content not covered by facts"))
+        sentence_heads = self.lexicon.heads_in(sentence)
+        side_facts = supporting
+        if sentence_heads:
+            side_facts = [
+                f for f in supporting if self.lexicon.heads_in(self._fact_text(f)) & sentence_heads
+            ]
+            fact_heads = set().union(
+                *(self.lexicon.heads_in(self._fact_text(f)) for f in side_facts)
+            )
+            if sentence_heads - fact_heads:
+                out.append(Violation(section, sentence, "symptom not in facts"))
+            side_facts = side_facts or supporting
         if temperatures(sentence) - temperatures(all_text):
             out.append(Violation(section, sentence, "temperature not in facts"))
         fact_durs = durations(all_text)
         for dur in durations(sentence):
             if not any(dur.close_to(f) for f in fact_durs):
                 out.append(Violation(section, sentence, "duration not in facts"))
-        nums = {n for n in numbers(sentence) if not 34 <= n <= 43}
-        if nums - set(numbers(all_text)) and not durations(sentence):
+        nums = {n for n in numbers(strip_durations(sentence)) if not 34 <= n <= 43}
+        if nums - set(numbers(all_text)):
             out.append(Violation(section, sentence, "number not in facts"))
-        if not laterality_compatible(laterality(sentence), laterality(support_text)):
+        if not laterality_compatible_any(
+            laterality(sentence), [laterality(self._fact_text(f)) for f in side_facts]
+        ):
             out.append(Violation(section, sentence, "laterality not in facts"))
         if has_absence_negation(sentence):
             negatives = [f for f in supporting if f.polarity == Polarity.NEGATIVE]
@@ -120,10 +135,10 @@ class FinalFactChecker:
                 out.append(Violation(section, sentence, "negation without negative fact"))
         elif any(f.polarity == Polarity.NEGATIVE for f in supporting) and len(supporting) == 1:
             out.append(Violation(section, sentence, "negative fact rendered as positive"))
+        for surface in self.lexicon.unsupported_medications(sentence, all_text):
+            out.append(Violation(section, sentence, f"medication not in facts: {surface}"))
         fact_tokens = set(tokens(all_text))
-        for med in self.lexicon.find_medications(sentence):
-            if not all(part in fact_tokens for part in med.surface.split()):
-                out.append(Violation(section, sentence, f"medication not in facts: {med.surface}"))
+        fact_tokens = set(tokens(all_text))
         for qualifier in self.lexicon.risky_in(sentence):
             if not any(t.startswith(qualifier) for t in fact_tokens):
                 out.append(Violation(section, sentence, f"qualifier not in facts: {qualifier}"))

@@ -1,0 +1,1029 @@
+[
+ {
+  "id": "hall_spec_nos_zalozhen_nedelyu",
+  "tags": [
+   "hallucination",
+   "ent_nose",
+   "negation",
+   "numbers"
+  ],
+  "transcript": [
+   "Нос заложен неделю."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "неделю",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "температуру отрицает",
+    "statement": "Температуру отрицает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен неделю",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "выделений из носа нет",
+    "statement": "",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен неделю",
+    "id": "f4"
+   },
+   {
+    "category": "other_history",
+    "value": "аллергологический анамнез не отягощён",
+    "statement": "Аллергологический анамнез не отягощён.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен неделю",
+    "id": "f5"
+   },
+   {
+    "category": "other_history",
+    "value": "хронические заболевания отрицает",
+    "statement": "Хронические заболевания отрицает.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен неделю",
+    "id": "f6"
+   },
+   {
+    "category": "treatment",
+    "value": "сосудосуживающие препараты",
+    "statement": "Самостоятельно использовал сосудосуживающие препараты.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен неделю",
+    "id": "f7"
+   },
+   {
+    "category": "other_history",
+    "value": "состояние удовлетворительное",
+    "statement": "Состояние удовлетворительное.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен неделю",
+    "id": "f8"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "value_not_supported",
+    "f4": "negation_not_in_evidence",
+    "f5": "value_not_supported",
+    "f6": "value_not_supported",
+    "f7": "value_not_supported",
+    "f8": "value_not_supported"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 7 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "отрицает",
+   "выделений из носа нет",
+   "не отягощ",
+   "сосудосуж",
+   "удовлетворит"
+  ]
+ },
+ {
+  "id": "hall_spec_same_input_forbidden_text_via_statement_only",
+  "tags": [
+   "hallucination",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен неделю."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "other_history",
+    "value": "затруднение носового дыхания",
+    "statement": "Состояние удовлетворительное.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f2"
+   },
+   {
+    "category": "other_history",
+    "value": "затруднение носового дыхания",
+    "statement": "Аллергологический анамнез не отягощён.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "затруднение носового дыхания",
+    "statement": "Рекомендовано обследование.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "forbidden_content",
+    "f3": "positive_fact_phrased_negative",
+    "f4": "forbidden_content"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "удовлетворит",
+   "не отягощ",
+   "рекомендован"
+  ]
+ },
+ {
+  "id": "hall_patient_question_about_antibiotic",
+  "tags": [
+   "hallucination",
+   "medication"
+  ],
+  "transcript": [
+   "Нос заложен уже неделю.",
+   "Доктор, мне антибиотик надо?"
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "уже неделю",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "антибиотик",
+    "statement": "Принимал антибиотик.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "мне антибиотик надо",
+    "id": "f3"
+   },
+   {
+    "category": "other_history",
+    "value": "потребность в антибиотике",
+    "statement": "Нуждается в антибиотике.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "антибиотик надо",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "evidence_is_question",
+    "f4": "evidence_is_question"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 7 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "антибиотик"
+  ]
+ },
+ {
+  "id": "hall_doctor_says_looks_like_sinusitis",
+  "tags": [
+   "hallucination"
+  ],
+  "transcript": [
+   "Нос заложен давно.",
+   "Так, похоже на синусит.",
+   "А что мне делать?"
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "синусит",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "похоже на синусит",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "diagnosis_not_allowed"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": [
+    "diagnosis_mentioned"
+   ]
+  },
+  "must_not_contain": [
+   "синусит"
+  ]
+ },
+ {
+  "id": "hall_doctor_hypothesis_as_history_fact",
+  "tags": [
+   "hallucination"
+  ],
+  "transcript": [
+   "Нос заложен давно.",
+   "Так, похоже на синусит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "other_history",
+    "value": "синусит",
+    "statement": "Отмечается синусит.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "похоже на синусит",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "diagnosis"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": [
+    "diagnosis_mentioned"
+   ]
+  },
+  "must_not_contain": [
+   "синусит"
+  ]
+ },
+ {
+  "id": "hall_childhood_tonsillitis_not_in_history",
+  "tags": [
+   "hallucination",
+   "throat"
+  ],
+  "transcript": [
+   "Горло болит.",
+   "Раньше болели ангиной?",
+   "В детстве была ангина."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло болит",
+    "id": "f1"
+   },
+   {
+    "category": "other_history",
+    "value": "ангина в детстве",
+    "statement": "В детстве перенёс ангину.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "В детстве была ангина",
+    "relevant_to_current": false,
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {},
+   "complaints": "Боль в горле.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "ангин"
+  ]
+ },
+ {
+  "id": "hall_patient_reported_earlier_sinusitis_is_ok",
+  "tags": [
+   "hallucination",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен.",
+   "Раньше что-то подобное было?",
+   "В прошлом году гайморит был."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "other_history",
+    "value": "гайморит в прошлом году",
+    "statement": "В прошлом году отмечался гайморит.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "В прошлом году гайморит был",
+    "relevant_to_current": true,
+    "id": "f2"
+   },
+   {
+    "category": "other_history",
+    "value": "хронический гайморит с обострениями",
+    "statement": "Страдает гайморитом с обострениями.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "В прошлом году гайморит был",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "unsupported_qualifier"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "В прошлом году отмечался гайморит.",
+   "warning_codes": []
+  },
+  "must_not_contain": []
+ },
+ {
+  "id": "hall_symptom_substitution_pain_for_fullness",
+  "tags": [
+   "hallucination",
+   "ent_ear"
+  ],
+  "transcript": [
+   "Заложило ухо после перелёта."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "заложенность уха",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Заложило ухо",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Заложило ухо",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported"
+   },
+   "complaints": "Заложенность уха.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "боль"
+  ]
+ },
+ {
+  "id": "hall_symptom_substitution_pain_for_difficulty_swallowing",
+  "tags": [
+   "hallucination",
+   "throat"
+  ],
+  "transcript": [
+   "Глотать тяжело стало."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение глотания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Глотать тяжело стало",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль при глотании",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Глотать тяжело стало",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported"
+   },
+   "complaints": "Затруднение глотания.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "боль"
+  ]
+ },
+ {
+  "id": "hall_symptom_substitution_nose_pain_for_congestion",
+  "tags": [
+   "hallucination",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в носу",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "боль"
+  ]
+ },
+ {
+  "id": "hall_symptom_substitution_throat_pain_for_tickle",
+  "tags": [
+   "hallucination",
+   "throat"
+  ],
+  "transcript": [
+   "Горло першит."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "першение в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло першит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Горло першит",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "value_not_supported"
+   },
+   "complaints": "Першение в горле.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "боль"
+  ]
+ },
+ {
+  "id": "hall_invented_qualifiers_every_kind",
+  "tags": [
+   "hallucination",
+   "ent_nose"
+  ],
+  "transcript": [
+   "Сопли идут уже три дня."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Сопли идут",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "уже три дня",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "обильные выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Сопли идут",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "густые выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Сопли идут",
+    "id": "f4"
+   },
+   {
+    "category": "complaint",
+    "value": "зелёные выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Сопли идут",
+    "id": "f5"
+   },
+   {
+    "category": "complaint",
+    "value": "постоянные выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Сопли идут",
+    "id": "f6"
+   },
+   {
+    "category": "complaint",
+    "value": "выраженные выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Сопли идут",
+    "id": "f7"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "unsupported_qualifier",
+    "f4": "unsupported_qualifier",
+    "f5": "unsupported_qualifier",
+    "f6": "unsupported_qualifier",
+    "f7": "unsupported_qualifier"
+   },
+   "complaints": "Выделения из носа.",
+   "history": "Считает себя больным около 3 дней.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "обильн",
+   "густ",
+   "зелён",
+   "постоянн",
+   "выражен"
+  ]
+ },
+ {
+  "id": "hall_evidence_defects",
+  "tags": [
+   "hallucination"
+  ],
+  "transcript": [
+   "Нос заложен."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "головная боль",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "у меня очень сильно болит голова",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "кашель",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [],
+    "evidence_quote": "кашель",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "боль в ухе",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s7"
+    ],
+    "evidence_quote": "ухо болит",
+    "id": "f4"
+   },
+   {
+    "category": "complaint",
+    "value": "",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "quote_not_in_transcript",
+    "f3": "no_evidence",
+    "f4": "unknown_segment",
+    "f5": "empty_value"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "голов",
+   "кашель"
+  ]
+ },
+ {
+  "id": "hall_ambiguous_duration_is_withheld",
+  "tags": [
+   "hallucination",
+   "numbers"
+  ],
+  "transcript": [
+   "Нос заложен.",
+   "Давно?",
+   "То ли три дня, то ли пять."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 3-5 дней",
+    "statement": "Считает себя больным около 3-5 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "То ли три дня, то ли пять",
+    "certainty": "ambiguous",
+    "ambiguity_note": "Пациент назвал два срока",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "ambiguous"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "",
+   "warning_codes": [
+    "ambiguous_fact"
+   ]
+  },
+  "must_not_contain": [
+   "3-5"
+  ]
+ },
+ {
+  "id": "hall_nothing_supported_gives_insufficient_data",
+  "tags": [
+   "hallucination"
+  ],
+  "transcript": [
+   "Здравствуйте.",
+   "Добрый день."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "боль в горле",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Здравствуйте",
+    "id": "f1"
+   },
+   {
+    "category": "temperature",
+    "value": "температуру отрицает",
+    "statement": "",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Добрый день",
+    "id": "f2"
+   }
+  ],
+  "expected": {
+   "accepted": [],
+   "rejected": {
+    "f1": "value_not_supported",
+    "f2": "value_not_supported"
+   },
+   "complaints": "",
+   "history": "",
+   "warning_codes": [
+    "insufficient_data"
+   ]
+  },
+  "must_not_contain": [
+   "горл"
+  ]
+ }
+]

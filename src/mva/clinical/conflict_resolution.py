@@ -6,8 +6,16 @@ removed and the doctor is warned. Less is better than invented.
 
 from __future__ import annotations
 
+from collections.abc import Callable
+
 from mva.clinical.lexicon import Lexicon, stems_overlap
-from mva.clinical.schemas import ClinicalFact, FactCategory, Polarity, ReviewWarning
+from mva.clinical.schemas import (
+    ClinicalFact,
+    FactCategory,
+    Polarity,
+    ReviewWarning,
+    Temporality,
+)
 from mva.clinical.text import (
     content_stems,
     durations,
@@ -25,6 +33,12 @@ _MESSAGES = {
     "polarity_conflict": "Противоречивые сведения о наличии симптома.",
     "temperature_conflict": "Противоречивые сведения о температуре.",
 }
+
+
+def _compatible_time(a: ClinicalFact, b: ClinicalFact) -> bool:
+    """Opposite polarities conflict unless both facts are dated differently."""
+    unknown = Temporality.UNKNOWN
+    return a.temporality == b.temporality or unknown in (a.temporality, b.temporality)
 
 
 def _first_seq(fact: ClinicalFact, order: dict[str, int]) -> int:
@@ -103,13 +117,9 @@ class ConflictResolver:
         ]
         for i, a in enumerate(symptomatic):
             for b in symptomatic[i + 1 :]:
-                if a.id in removed or b.id in removed:
+                if a.id in removed or b.id in removed or not self._same_symptom(a, b):
                     continue
-                sa = content_stems(a.value) - PHRASING_STEMS
-                sb = content_stems(b.value) - PHRASING_STEMS
-                if not stems_overlap(sa, sb):
-                    continue
-                if a.polarity != b.polarity and a.temporality == b.temporality:
+                if a.polarity != b.polarity and _compatible_time(a, b):
                     settle([a, b], "polarity_conflict")
                     continue
                 la, lb = laterality(a.value), laterality(b.value)
@@ -117,6 +127,27 @@ class ConflictResolver:
                     settle([a, b], "laterality_conflict")
         kept = [f for f in facts if f.id not in removed]
         return kept, warnings
+
+    def _same_symptom(self, a: ClinicalFact, b: ClinicalFact) -> bool:
+        """Both facts talk about the same symptom (head + region), e.g. «температуры не было»
+        and «37,5 °C» (a temperature fact is about fever even when its value is only a number)."""
+        heads_a, heads_b = (
+            self._topic(a, self.lexicon.heads_in),
+            self._topic(b, self.lexicon.heads_in),
+        )
+        if heads_a and heads_b:
+            locs_a, locs_b = self.lexicon.locations_in(a.value), self.lexicon.locations_in(b.value)
+            return bool(heads_a & heads_b) and (not (locs_a and locs_b) or bool(locs_a & locs_b))
+        sa = content_stems(a.value) - PHRASING_STEMS
+        sb = content_stems(b.value) - PHRASING_STEMS
+        return stems_overlap(sa, sb)
+
+    @staticmethod
+    def _topic(fact: ClinicalFact, heads_in: Callable[[str], set[str]]) -> set[str]:
+        heads = heads_in(fact.value)
+        if fact.category == FactCategory.TEMPERATURE:
+            heads.add("fever")
+        return heads
 
     @staticmethod
     def _dedupe(facts: list[ClinicalFact]) -> list[ClinicalFact]:

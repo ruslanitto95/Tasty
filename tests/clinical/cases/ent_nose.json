@@ -1,0 +1,860 @@
+[
+ {
+  "id": "nose_congestion_simple",
+  "tags": [
+   "ent_nose",
+   "negation",
+   "numbers"
+  ],
+  "transcript": [
+   "Что вас беспокоит?",
+   "Нос заложен уже неделю.",
+   "Температура была?",
+   "Нет, температуры не было.",
+   "Чем-нибудь лечились?",
+   "Називин капал."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нос заложен",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 7 дней",
+    "statement": "Считает себя больным около 7 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нос заложен уже неделю",
+    "id": "f2"
+   },
+   {
+    "category": "temperature",
+    "value": "повышения температуры не отмечал",
+    "statement": "Повышение температуры тела не отмечал.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Нет, температуры не было",
+    "id": "f3"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Самостоятельно применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s6"
+    ],
+    "evidence_quote": "Називин капал",
+    "id": "f4"
+   },
+   {
+    "category": "temperature",
+    "value": "37,5 °C",
+    "statement": "Температура повышалась до 37,5 °C.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "температуры не было",
+    "id": "f5"
+   },
+   {
+    "category": "treatment",
+    "value": "Отривин",
+    "statement": "Применял Отривин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s6"
+    ],
+    "evidence_quote": "Називин капал",
+    "id": "f6"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3",
+    "f4"
+   ],
+   "rejected": {
+    "f5": "temperature_mismatch",
+    "f6": "medication_not_in_evidence"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Считает себя больным около 7 дней. Повышение температуры тела не отмечал. Самостоятельно применял Називин.",
+   "warning_codes": [
+    "medication_not_in_evidence",
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "37,5",
+   "Отривин"
+  ]
+ },
+ {
+  "id": "nose_right_sided_obstruction",
+  "tags": [
+   "ent_nose",
+   "laterality"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Правая половина носа не дышит.",
+   "С каких пор?",
+   "Три дня.",
+   "Выделения есть?",
+   "Немного течёт из носа."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Правая половина носа не дышит",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s6"
+    ],
+    "evidence_quote": "Немного течёт из носа",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 3 дней",
+    "statement": "Считает себя больным около 3 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Три дня",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Правая половина носа не дышит",
+    "id": "f4"
+   },
+   {
+    "category": "complaint",
+    "value": "обильные выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s6"
+    ],
+    "evidence_quote": "Немного течёт из носа",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "laterality_mismatch",
+    "f5": "unsupported_qualifier"
+   },
+   "complaints": "Затруднение носового дыхания справа; выделения из носа.",
+   "history": "Считает себя больным около 3 дней.",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "слева",
+   "обильн"
+  ]
+ },
+ {
+  "id": "nose_runny_nose_purulent_added",
+  "tags": [
+   "ent_nose",
+   "hallucination"
+  ],
+  "transcript": [
+   "На что жалуетесь?",
+   "Сопли замучили, из носа течёт постоянно.",
+   "А цвет какой?",
+   "Не смотрел, не обратил внимания."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Сопли замучили, из носа течёт",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "гнойные выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Сопли замучили, из носа течёт",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "зелёные выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Не смотрел, не обратил внимания",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1"
+   ],
+   "rejected": {
+    "f2": "unsupported_qualifier",
+    "f3": "value_not_supported"
+   },
+   "complaints": "Выделения из носа.",
+   "history": "",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "гнойн",
+   "зелен",
+   "зелён"
+  ]
+ },
+ {
+  "id": "nose_chronic_runny_month",
+  "tags": [
+   "ent_nose",
+   "negation",
+   "numbers"
+  ],
+  "transcript": [
+   "Давно сопли?",
+   "Да уже месяц, наверное, не проходят.",
+   "Чем лечились?",
+   "Ничем не лечился."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "выделения из носа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Давно сопли? Да уже месяц",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 1 месяца",
+    "statement": "Считает себя больным около 1 месяца.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "уже месяц",
+    "id": "f2"
+   },
+   {
+    "category": "treatment",
+    "value": "самостоятельно не лечился",
+    "statement": "Самостоятельно не лечился.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Ничем не лечился",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "хронический насморк",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1",
+     "s2"
+    ],
+    "evidence_quote": "Давно сопли",
+    "id": "f4"
+   },
+   {
+    "category": "treatment",
+    "value": "Називин",
+    "statement": "Применял Називин.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s4"
+    ],
+    "evidence_quote": "Ничем не лечился",
+    "id": "f5"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2",
+    "f3"
+   ],
+   "rejected": {
+    "f4": "unsupported_qualifier",
+    "f5": "medication_not_in_evidence"
+   },
+   "complaints": "Выделения из носа.",
+   "history": "Считает себя больным около 1 месяца. Самостоятельно не лечился.",
+   "warning_codes": [
+    "medication_not_in_evidence"
+   ]
+  },
+  "must_not_contain": [
+   "хроническ",
+   "Називин"
+  ]
+ },
+ {
+  "id": "nose_night_snoring",
+  "tags": [
+   "ent_nose",
+   "numbers",
+   "hallucination"
+  ],
+  "transcript": [
+   "Муж говорит, я храплю по ночам.",
+   "Давно это?",
+   "Пять лет уже."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "храп во сне",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "я храплю по ночам",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 5 лет",
+    "statement": "Считает себя больным около 5 лет.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Пять лет уже",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "ночной храп",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "я храплю по ночам",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "остановки дыхания во сне",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "я храплю по ночам",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "unsupported_qualifier",
+    "f4": "value_not_supported"
+   },
+   "complaints": "Храп во сне.",
+   "history": "Считает себя больным около 5 лет.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "остановк",
+   "ночной"
+  ]
+ },
+ {
+  "id": "nose_smell_loss_two_weeks",
+  "tags": [
+   "ent_nose",
+   "numbers"
+  ],
+  "transcript": [
+   "Запахи перестал чувствовать.",
+   "Давно?",
+   "Две недели."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "снижение обоняния",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Запахи перестал чувствовать",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 недель",
+    "statement": "Считает себя больным около 2 недель.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Две недели",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 2 месяцев",
+    "statement": "Считает себя больным около 2 месяцев.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Две недели",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "потеря вкуса",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Запахи перестал чувствовать",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "duration_mismatch",
+    "f4": "value_not_supported"
+   },
+   "complaints": "Снижение обоняния.",
+   "history": "Считает себя больным около 2 недель.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "месяцев",
+   "вкус"
+  ]
+ },
+ {
+  "id": "nose_after_septum_surgery",
+  "tags": [
+   "ent_nose",
+   "laterality"
+  ],
+  "transcript": [
+   "Два месяца назад мне делали операцию на перегородке, после неё хуже дышать.",
+   "Что именно беспокоит сейчас?",
+   "Левая сторона вообще не дышит."
+  ],
+  "llm_facts": [
+   {
+    "category": "other_history",
+    "value": "операция на носовой перегородке два месяца назад",
+    "statement": "Два месяца назад перенёс операцию на носовой перегородке.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Два месяца назад мне делали операцию на перегородке",
+    "relevant_to_current": true,
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания слева",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Левая сторона вообще не дышит",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Левая сторона вообще не дышит",
+    "id": "f3"
+   },
+   {
+    "category": "other_history",
+    "value": "искривление носовой перегородки",
+    "statement": "Искривление носовой перегородки.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "операцию на перегородке",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch",
+    "f4": "diagnosis_not_in_evidence"
+   },
+   "complaints": "Затруднение носового дыхания слева.",
+   "history": "Два месяца назад перенёс операцию на носовой перегородке.",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "искривлен",
+   "справа"
+  ]
+ },
+ {
+  "id": "nose_both_sides_night_worse",
+  "tags": [
+   "ent_nose",
+   "laterality"
+  ],
+  "transcript": [
+   "Что беспокоит?",
+   "Нос не дышит с обеих сторон.",
+   "Это постоянно?",
+   "Ночью хуже."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нос не дышит с обеих сторон",
+    "id": "f1"
+   },
+   {
+    "category": "complaint",
+    "value": "ухудшение носового дыхания ночью",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Ночью хуже",
+    "id": "f2"
+   },
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания справа",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2"
+    ],
+    "evidence_quote": "Нос не дышит с обеих сторон",
+    "id": "f3"
+   },
+   {
+    "category": "complaint",
+    "value": "ухудшение носового дыхания в ночное время",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3",
+     "s4"
+    ],
+    "evidence_quote": "Ночью хуже",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "laterality_mismatch",
+    "f4": "unsupported_qualifier"
+   },
+   "complaints": "Затруднение носового дыхания с обеих сторон; ухудшение носового дыхания ночью.",
+   "history": "",
+   "warning_codes": [
+    "laterality_mismatch"
+   ]
+  },
+  "must_not_contain": [
+   "ночное",
+   "справа"
+  ]
+ },
+ {
+  "id": "nose_both_sides_spoken_right_and_left",
+  "tags": [
+   "ent_nose",
+   "laterality",
+   "numbers"
+  ],
+  "transcript": [
+   "Нос закладывает и справа, и слева.",
+   "Как давно?",
+   "Пять дней."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания с обеих сторон",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос закладывает и справа, и слева",
+    "id": "f1"
+   },
+   {
+    "category": "duration",
+    "value": "около 5 дней",
+    "statement": "Считает себя больным около 5 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s2",
+     "s3"
+    ],
+    "evidence_quote": "Пять дней",
+    "id": "f2"
+   },
+   {
+    "category": "duration",
+    "value": "около 15 дней",
+    "statement": "Считает себя больным около 15 дней.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Пять дней",
+    "id": "f3"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "duration_mismatch"
+   },
+   "complaints": "Затруднение носового дыхания с обеих сторон.",
+   "history": "Считает себя больным около 5 дней.",
+   "warning_codes": [
+    "number_unconfirmed"
+   ]
+  },
+  "must_not_contain": [
+   "15 дней"
+  ]
+ },
+ {
+  "id": "nose_polyp_misheard_drug_dx",
+  "tags": [
+   "ent_nose",
+   "hallucination"
+  ],
+  "transcript": [
+   "Нос стал плохо дышать.",
+   "Вам ставили какой-то диагноз?",
+   "Нет, никогда.",
+   "Закапывали что-нибудь?",
+   "Нет, ничего не закапывал."
+  ],
+  "llm_facts": [
+   {
+    "category": "complaint",
+    "value": "затруднение носового дыхания",
+    "statement": "",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s1"
+    ],
+    "evidence_quote": "Нос стал плохо дышать",
+    "id": "f1"
+   },
+   {
+    "category": "treatment",
+    "value": "ничего не применял",
+    "statement": "Лекарственные препараты не применял.",
+    "polarity": "negative",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s5"
+    ],
+    "evidence_quote": "Нет, ничего не закапывал",
+    "id": "f2"
+   },
+   {
+    "category": "other_history",
+    "value": "полипоз носа в анамнезе",
+    "statement": "Полипоз носа в анамнезе.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Нет, никогда",
+    "relevant_to_current": true,
+    "id": "f3"
+   },
+   {
+    "category": "previous_visit",
+    "value": "ранее обращался к оториноларингологу",
+    "statement": "Ранее обращался к оториноларингологу.",
+    "polarity": "positive",
+    "temporality": "unknown",
+    "evidence_segment_ids": [
+     "s3"
+    ],
+    "evidence_quote": "Нет, никогда",
+    "id": "f4"
+   }
+  ],
+  "expected": {
+   "accepted": [
+    "f1",
+    "f2"
+   ],
+   "rejected": {
+    "f3": "value_not_supported",
+    "f4": "value_not_supported"
+   },
+   "complaints": "Затруднение носового дыхания.",
+   "history": "Лекарственные препараты не применял.",
+   "warning_codes": []
+  },
+  "must_not_contain": [
+   "полипоз",
+   "обращался"
+  ]
+ }
+]

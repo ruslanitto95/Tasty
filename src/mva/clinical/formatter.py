@@ -53,10 +53,10 @@ def is_complaint(fact: ClinicalFact) -> bool:
 
 def in_history(fact: ClinicalFact) -> bool:
     if fact.category == FactCategory.COMPLAINT:
+        if fact.polarity == Polarity.NEGATIVE:
+            return True  # «выделений из носа нет» is documented, not silently dropped
         return fact.temporality == Temporality.PAST and bool(fact.statement)
-    if fact.category == FactCategory.OTHER_HISTORY and not fact.relevant_to_current:
-        return False
-    return True
+    return not (fact.category == FactCategory.OTHER_HISTORY and not fact.relevant_to_current)
 
 
 def history_sentence(fact: ClinicalFact) -> str:
@@ -79,7 +79,7 @@ class DeterministicFormatter:
 
         trace: dict[str, list[str]] = {}
         complaints = [f for f in sorted(facts, key=seq) if is_complaint(f)]
-        complaint_parts = []
+        complaint_parts: list[str] = []
         for fact in complaints:
             part = fact.value.strip().rstrip(".;")
             if part and part.lower() not in (p.lower() for p in complaint_parts):

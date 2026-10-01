@@ -9,10 +9,16 @@ from datetime import date
 from mva.clinical.conflict_resolution import ConflictResolver
 from mva.clinical.extraction import PROMPT as EXTRACTION_PROMPT
 from mva.clinical.extraction import FactExtractor
-from mva.clinical.fact_check import FinalFactChecker
+from mva.clinical.fact_check import FinalFactChecker, Violation
 from mva.clinical.formatter import DeterministicFormatter, LLMFormatter
 from mva.clinical.lexicon import Lexicon, load_lexicon
-from mva.clinical.schemas import DocumentDraft, ExtractionResult, FormattedDocument, ReviewWarning
+from mva.clinical.schemas import (
+    ClinicalFact,
+    DocumentDraft,
+    ExtractionResult,
+    FormattedDocument,
+    ReviewWarning,
+)
 from mva.clinical.text import split_sentences
 from mva.clinical.validation import EvidenceValidator
 from mva.llm.base import LLMError, LLMProvider
@@ -72,6 +78,12 @@ class ClinicalPipeline:
                 "Deterministic formatter failed fact check (%d violations)", len(det_violations)
             )
             det_doc = _strip(det_doc, {v.sentence for v in det_violations})
+            warnings.append(
+                ReviewWarning(
+                    code="text_stripped",
+                    message="Часть текста исключена: не прошла проверку соответствия фактам.",
+                )
+            )
         doc, formatter = det_doc, "deterministic"
         if self.llm_formatter is not None and facts:
             doc, formatter, extra = self._llm_format(facts, det_doc, cancel)
@@ -98,14 +110,14 @@ class ClinicalPipeline:
         )
 
     def _violations(
-        self, doc: FormattedDocument, reference: FormattedDocument, facts: list
-    ) -> list:
+        self, doc: FormattedDocument, reference: FormattedDocument, facts: list[ClinicalFact]
+    ) -> list[Violation]:
         return self.checker.check(doc, facts) + self.checker.check_completeness(
             doc, reference, facts
         )
 
     def _llm_format(
-        self, facts: list, fallback: FormattedDocument, cancel: threading.Event | None
+        self, facts: list[ClinicalFact], fallback: FormattedDocument, cancel: threading.Event | None
     ) -> tuple[FormattedDocument, str, list[ReviewWarning]]:
         assert self.llm_formatter is not None
         try:
@@ -138,7 +150,8 @@ class ClinicalPipeline:
 
 def _strip(doc: FormattedDocument, bad: set[str]) -> FormattedDocument:
     def keep(text: str) -> str:
-        return " ".join(s for s in split_sentences(text) if s not in bad)
+        kept = " ".join(s for s in split_sentences(text) if s not in bad)
+        return kept[:-1] + "." if kept.endswith(";") else kept
 
     return FormattedDocument(
         complaints_text=keep(doc.complaints_text), history_text=keep(doc.history_text)
