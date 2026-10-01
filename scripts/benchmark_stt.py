@@ -1,6 +1,6 @@
 """GigaAM STT benchmark: WAV -> VAD -> GigaAM; WER + clinical error rates + RTF.
 
-    uv run python scripts/benchmark_stt.py [--audio-dir tests/benchmark/audio]
+uv run python scripts/benchmark_stt.py [--audio-dir tests/benchmark/audio]
 """
 
 from __future__ import annotations
@@ -43,7 +43,9 @@ def main() -> int:
         row = {"file": wav.name, **asdict(result), "metrics": metrics}
         summary.append(row)
         print(json.dumps(row, ensure_ascii=False))
-    (ROOT / "metrics" / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+    (ROOT / "metrics" / "summary.json").write_text(
+        json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     return 0
 
 
