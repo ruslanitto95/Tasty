@@ -97,19 +97,26 @@ class ClinicalPipeline:
             else "deterministic_v1",
         )
 
+    def _violations(
+        self, doc: FormattedDocument, reference: FormattedDocument, facts: list
+    ) -> list:
+        return self.checker.check(doc, facts) + self.checker.check_completeness(
+            doc, reference, facts
+        )
+
     def _llm_format(
         self, facts: list, fallback: FormattedDocument, cancel: threading.Event | None
     ) -> tuple[FormattedDocument, str, list[ReviewWarning]]:
         assert self.llm_formatter is not None
         try:
             doc = self.llm_formatter.format(facts, cancel)
-            violations = self.checker.check(doc, facts)
+            violations = self._violations(doc, fallback, facts)
             if violations:
                 log.warning("Formatter output failed fact check (%d); repairing", len(violations))
                 doc = self.llm_formatter.format(
                     facts, cancel, [v.describe() for v in violations], doc
                 )
-                violations = self.checker.check(doc, facts)
+                violations = self._violations(doc, fallback, facts)
             if not violations:
                 return doc, "llm", []
             log.warning(

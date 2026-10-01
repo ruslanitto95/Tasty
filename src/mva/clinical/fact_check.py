@@ -45,6 +45,38 @@ class FinalFactChecker:
                         violations.extend(self._check_sentence(section, clause.strip(), facts))
         return violations
 
+    def check_completeness(
+        self, doc: FormattedDocument, reference: FormattedDocument, facts: list[ClinicalFact]
+    ) -> list[Violation]:
+        """The stylised text must not drop sections or critical details of validated facts."""
+        out: list[Violation] = []
+        sections = (
+            ("complaints", doc.complaints_text, reference.complaints_text),
+            ("history", doc.history_text, reference.history_text),
+        )
+        for section, text, ref in sections:
+            if ref.strip() and not text.strip():
+                out.append(Violation(section, "", "section omitted"))
+                continue
+            if not ref.strip():
+                continue
+            if not temperatures(ref) <= temperatures(text):
+                out.append(Violation(section, text, "temperature omitted"))
+            if not laterality(ref) <= laterality(text) | (
+                {"right", "left"} if "bilateral" in laterality(text) else set()
+            ):
+                out.append(Violation(section, text, "laterality omitted"))
+            ref_durs, text_durs = durations(ref), durations(text)
+            if any(not any(d.close_to(t) for t in text_durs) for d in ref_durs):
+                out.append(Violation(section, text, "duration omitted"))
+            text_tokens = set(tokens(text))
+            for med in self.lexicon.find_medications(ref):
+                if not all(part in text_tokens for part in med.surface.split()):
+                    out.append(Violation(section, text, f"medication omitted: {med.surface}"))
+            if has_absence_negation(ref) and not has_absence_negation(text):
+                out.append(Violation(section, text, "negation omitted"))
+        return out
+
     def _fact_text(self, fact: ClinicalFact) -> str:
         return f"{fact.value} {fact.statement}"
 

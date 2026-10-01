@@ -77,7 +77,11 @@ def refresh_portaudio() -> None:
 
 
 def list_input_devices(refresh: bool = False) -> list[InputDevice]:
-    sd = _sd()
+    try:
+        sd = _sd()
+    except OSError:
+        log.warning("PortAudio library not available")
+        return []
     if refresh:
         refresh_portaudio()
     try:
