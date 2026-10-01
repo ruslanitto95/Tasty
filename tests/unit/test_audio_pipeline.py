@@ -59,7 +59,7 @@ def test_segment_with_pre_and_post_roll():
     segs, audio = run(probs, pre_roll_ms=128, post_roll_ms=96)
     assert len(segs) == 1
     s = segs[0]
-    pre = int(128 * 16)  # 128 ms -> 2048 samples (4 frames)
+    pre = 128 * 16  # 128 ms -> 2048 samples (4 frames)
     assert s.samples[0] == audio[20 * F - pre]
     # speech end = frame 50; post-roll 96 ms = 1536 samples
     assert len(s.samples) == pre + 30 * F + 96 * 16
