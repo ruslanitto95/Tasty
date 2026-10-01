@@ -227,7 +227,8 @@ class AppController(QObject):
 
     def _stop_worker(self) -> None:
         visit = self.visit
-        assert visit is not None and visit.transcriber is not None
+        assert visit is not None
+        assert visit.transcriber is not None
         self.capture.stop()
         visit.stopped_monotonic = time.monotonic()
         self._set(AppState.FINALIZING_STT)

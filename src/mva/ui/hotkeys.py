@@ -7,8 +7,9 @@ import ctypes
 import logging
 import sys
 from collections.abc import Callable
+from typing import Any
 
-from PySide6.QtCore import QAbstractNativeEventFilter, QByteArray
+from PySide6.QtCore import QAbstractNativeEventFilter
 from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import QApplication, QWidget
 
@@ -49,7 +50,7 @@ class _WinFilter(QAbstractNativeEventFilter):
         super().__init__()
         self.callbacks = callbacks
 
-    def nativeEventFilter(self, event_type: QByteArray | bytes, message: int) -> tuple[bool, int]:  # noqa: N802
+    def nativeEventFilter(self, event_type: Any, message: Any) -> tuple[bool, int]:
         if bytes(event_type) != b"windows_generic_MSG":
             return False, 0
         from ctypes import wintypes
@@ -94,7 +95,9 @@ class HotkeyManager:
             self._callbacks[index] = callback
         if self._filter is None:
             self._filter = _WinFilter(self._callbacks)
-            QApplication.instance().installNativeEventFilter(self._filter)
+            app = QApplication.instance()
+            if app is not None:
+                app.installNativeEventFilter(self._filter)
         else:
             self._filter.callbacks = self._callbacks
 

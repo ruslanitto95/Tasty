@@ -151,6 +151,7 @@ def run_self_test(
         text = transcript.text()
         detail: dict[str, Any] = {
             "_ok": not errors and bool(text.strip()),
+            "device_name": device.name,
             "device_hostapi": device.hostapi,
             "device_rate": device.default_samplerate,
             "peak": round(float(np.max(levels)) if levels else 0.0, 3),

@@ -284,9 +284,8 @@ class ModelManager:
                     self._max_attempts,
                     type(exc).__name__,
                 )
-                if isinstance(exc, OSError) and not isinstance(exc, httpx.HTTPError):
-                    if getattr(exc, "errno", None) == 28:  # ENOSPC
-                        raise NotEnoughDiskSpace(file.size, 0) from exc
+                if not isinstance(exc, httpx.HTTPError) and getattr(exc, "errno", None) == 28:
+                    raise NotEnoughDiskSpace(file.size, 0) from exc  # ENOSPC
                 time.sleep(min(2.0 * attempt, 8.0))
         else:
             raise ModelDownloadError(

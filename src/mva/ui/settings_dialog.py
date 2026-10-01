@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import cast
 
 from PySide6.QtGui import QGuiApplication, QKeySequence
 from PySide6.QtWidgets import (
@@ -375,12 +376,13 @@ class SettingsDialog(QDialog):
             if isinstance(result, Exception):
                 self.diag.setPlainText(f"Ошибка: {type(result).__name__}")
                 return
-            self._checks = result
+            checks = cast(list[health_check.CheckResult], result)
+            self._checks = checks
             self.diag.setPlainText(
                 "\n".join(
                     f"{names.get(r.name, r.name)}: {'OK' if r.ok else 'ОШИБКА'} — {r.detail}"
-                    for r in result
-                )  # type: ignore[union-attr]
+                    for r in checks
+                )
             )
 
         self._task(work, done)
@@ -402,7 +404,7 @@ class SettingsDialog(QDialog):
             if isinstance(result, Exception):
                 self.diag.setPlainText(error_text("model_unavailable"))
                 return
-            text, hits, rtf = result  # type: ignore[misc]
+            text, hits, rtf = cast(tuple[str, list[str], float], result)
             ok = len(hits) >= 4
             self.diag.setPlainText(
                 f"GigaAM: {'OK' if ok else 'ОШИБКА'} (RTF {rtf:.2f})\n\n«{text}»"

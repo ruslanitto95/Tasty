@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, types, unit, integration, clinical
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.9.28"
+      - name: System libraries (PortAudio, Qt offscreen)
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libportaudio2 libegl1 libgl1 libxkbcommon0 libfontconfig1 libdbus-1-3
+      - run: uv sync --frozen
+      - run: uv run ruff check src tests scripts packaging
+      - run: uv run ruff format --check src tests scripts packaging
+      - run: uv run mypy
+      - name: Unit + integration + clinical regression
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: uv run pytest tests/unit tests/integration tests/clinical -q -p no:cacheprovider
+      - name: Dependency audit
+        run: uv export --frozen --no-dev --no-hashes --no-emit-project | grep -v "^gigaam" > /tmp/req.txt && uv run pip-audit -r /tmp/req.txt --disable-pip --no-deps --progress-spinner off
+
+  model:
+    name: Real GigaAM + microphone + GUI e2e (Linux)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.9.28"
+      - name: System libraries + PulseAudio virtual microphone
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libportaudio2 libasound2-plugins pulseaudio pulseaudio-utils libegl1 libgl1 libxkbcommon0 libfontconfig1 libdbus-1-3
+          pulseaudio -D --exit-idle-time=-1
+          pactl load-module module-null-sink sink_name=vspk
+          pactl set-default-sink vspk
+          pactl set-default-source vspk.monitor
+      - run: uv sync --frozen
+      - name: Real-model tests (the app's ModelManager downloads GigaAM itself)
+        env:
+          QT_QPA_PLATFORM: offscreen
+          MVA_MODELS_DIR: ${{ runner.temp }}/mva-models
+          MVA_SCREENSHOT_DIR: ${{ runner.temp }}/screens
+        run: uv run pytest tests/audio tests/e2e -q -p no:cacheprovider -rs
+      - name: Headless self-test with microphone
+        env:
+          MVA_HOME: ${{ runner.temp }}/mva-home
+          MVA_MODELS_DIR: ${{ runner.temp }}/mva-models
+        run: |
+          (sleep 3; paplay --device=vspk src/mva/resources/test_audio/self_test_ru.wav) &
+          uv run mva --self-test --mic-seconds 26 --include-mic-text --report ${{ runner.temp }}/selftest-linux.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: linux-model-evidence
+          path: |
+            ${{ runner.temp }}/screens
+            ${{ runner.temp }}/selftest-linux.json

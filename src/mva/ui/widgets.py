@@ -26,7 +26,7 @@ class LevelMeter(QWidget):
         self._level = 0.0
         self.update()
 
-    def paintEvent(self, _event) -> None:  # noqa: N802
+    def paintEvent(self, _event) -> None:
         painter = QPainter(self)
         rect = self.rect()
         painter.fillRect(rect, QColor(128, 128, 128, 60))

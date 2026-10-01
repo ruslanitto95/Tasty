@@ -17,9 +17,7 @@ class BackgroundTask(QObject):
     failed = Signal(object)
     progress = Signal(object)
 
-    def __init__(
-        self, fn: Callable[["BackgroundTask"], Any], parent: QObject | None = None
-    ) -> None:
+    def __init__(self, fn: Callable[[BackgroundTask], Any], parent: QObject | None = None) -> None:
         super().__init__(parent)
         self._fn = fn
         self.cancel = threading.Event()

@@ -28,6 +28,9 @@ def _parse(argv: list[str]) -> argparse.Namespace:
         "--mic-seconds", type=float, default=0.0, help="also record N s from default mic"
     )
     parser.add_argument("--include-mic-text", action="store_true")
+    parser.add_argument(
+        "--mic-device", help="self-test: input device name (substring); default = system"
+    )
     parser.add_argument("--report", type=Path, help="write the self-test JSON report here")
     parser.add_argument("--transcribe", type=Path, help="developer: transcribe an audio file")
     parser.add_argument(
@@ -74,6 +77,7 @@ def _headless(args: argparse.Namespace) -> int:
         manager,
         provider,
         mic_seconds=args.mic_seconds,
+        mic_device=_pick_device(args.mic_device),
         include_mic_text=args.include_mic_text,
         report=lambda msg: print(msg, flush=True),
     )
@@ -83,7 +87,24 @@ def _headless(args: argparse.Namespace) -> int:
     return 0 if report.ok else 1
 
 
+def _ensure_std_streams() -> None:
+    # Windowed (no console) frozen builds have sys.stdout/stderr = None; libraries still print.
+    for name in ("stdout", "stderr"):
+        if getattr(sys, name) is None:
+            setattr(sys, name, open(os.devnull, "w", encoding="utf-8"))  # noqa: SIM115
+
+
+def _pick_device(name: str | None):  # type: ignore[no-untyped-def]
+    if not name:
+        return None
+    from mva.audio.capture import list_input_devices
+
+    devices = list_input_devices(refresh=True)
+    return next((d for d in devices if name.lower() in d.name.lower()), None)
+
+
 def main(argv: list[str] | None = None) -> int:
+    _ensure_std_streams()
     args = _parse(sys.argv[1:] if argv is None else argv)
     from mva.paths import logs_dir
     from mva.security.privacy import configure_logging

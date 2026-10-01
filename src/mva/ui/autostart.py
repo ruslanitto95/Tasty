@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import sys
 
 _KEY = r"Software\Microsoft\Windows\CurrentVersion\Run"
@@ -17,8 +18,6 @@ def set_autostart(enabled: bool) -> bool:
         if enabled:
             winreg.SetValueEx(key, _NAME, 0, winreg.REG_SZ, f'"{sys.executable}"')
         else:
-            try:
+            with contextlib.suppress(FileNotFoundError):
                 winreg.DeleteValue(key, _NAME)
-            except FileNotFoundError:
-                pass
     return True

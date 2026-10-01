@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QCheckBox,
@@ -44,7 +46,7 @@ class MicPage(QWizardPage):
                 QLabel("⚠ Микрофоны не найдены. Подключите микрофон — его можно выбрать позже.")
             )
 
-    def validatePage(self) -> bool:  # noqa: N802
+    def validatePage(self) -> bool:
         data = self.combo.currentData()
         s = self.c.settings.model_copy(deep=True)
         s.audio.device_name = data[0] if data else None
@@ -85,7 +87,7 @@ class GigaAMPage(QWizardPage):
         c.model_ready.connect(lambda _d: self._run_test())
         c.error.connect(self._error)
 
-    def initializePage(self) -> None:  # noqa: N802
+    def initializePage(self) -> None:
         if self.c.provider.is_loaded:
             self._run_test()
         elif self.c.state == AppState.ERROR:
@@ -130,7 +132,7 @@ class GigaAMPage(QWizardPage):
                 self.status.setText(error_text("stt_failed"))
                 self.retry.setVisible(True)
                 return
-            text, rtf = result  # type: ignore[misc]
+            text, rtf = cast(tuple[str, float], result)
             self.ok = len(keyword_hits(text)) >= MIN_KEYWORDS
             device = provider.info().device.upper()
             self.status.setText(
@@ -145,7 +147,7 @@ class GigaAMPage(QWizardPage):
         self._task = task
         task.start()
 
-    def isComplete(self) -> bool:  # noqa: N802
+    def isComplete(self) -> bool:
         return self.ok
 
 
@@ -173,7 +175,7 @@ class AIPage(QWizardPage):
         f.addRow("Модель:", self.model)
         f.addRow("API-ключ:", self.key)
 
-    def validatePage(self) -> bool:  # noqa: N802
+    def validatePage(self) -> bool:
         s = self.c.settings.model_copy(deep=True)
         s.ai.enabled = self.enabled.isChecked()
         s.ai.base_url = self.url.text().strip()

@@ -336,7 +336,7 @@ class MainWindow(QMainWindow):
         show.triggered.connect(self.bring_to_front)
         start = QAction(tr("tray_start"), menu)
         # Starting from the tray always shows the window: no hidden recording.
-        start.triggered.connect(lambda: (self.bring_to_front(), self.on_start_stop_hotkey()))
+        start.triggered.connect(self._tray_start)
         quit_action = QAction(tr("tray_quit"), menu)
         quit_action.triggered.connect(self.quit)
         menu.addActions([show, start, quit_action])
@@ -352,6 +352,10 @@ class MainWindow(QMainWindow):
         tray.show()
         self._tray_menu = menu
         return tray
+
+    def _tray_start(self) -> None:
+        self.bring_to_front()
+        self.on_start_stop_hotkey()
 
     # ---- settings / devices ------------------------------------------------------------
     def apply_settings(self) -> None:
@@ -379,7 +383,7 @@ class MainWindow(QMainWindow):
                 hk.start_stop: self.on_start_stop_hotkey,
                 hk.copy_complaints: self.copy_complaints,
                 hk.copy_history: self.copy_history,
-                hk.new_visit: self.request_new_visit,
+                hk.new_visit: self._new_visit_hotkey,
             }
         )
         self.hotkey_hint.setText(
@@ -646,6 +650,9 @@ class MainWindow(QMainWindow):
         self.c.new_visit()
         return True
 
+    def _new_visit_hotkey(self) -> None:
+        self.request_new_visit()
+
     def _confirm_cancel_recording(self) -> None:
         answer = QMessageBox.question(
             self, tr("cancel"), "Отменить приём? Распознанный текст будет удалён."
@@ -716,7 +723,7 @@ class MainWindow(QMainWindow):
         self._quitting = True
         self.close()
 
-    def closeEvent(self, event: QCloseEvent) -> None:  # noqa: N802
+    def closeEvent(self, event: QCloseEvent) -> None:
         if not self._quitting and self.c.state == AppState.RECORDING:
             answer = QMessageBox.question(
                 self, tr("tray_quit"), "Идёт приём. Завершить запись и выйти?"
@@ -730,4 +737,6 @@ class MainWindow(QMainWindow):
         if self.tray is not None:
             self.tray.hide()
         event.accept()
-        QGuiApplication.instance().quit()
+        app = QGuiApplication.instance()
+        if app is not None:
+            app.quit()

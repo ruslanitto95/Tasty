@@ -42,7 +42,8 @@ def install_crash_handler(bridge: _CrashBridge) -> None:
 
 
 def run_gui(smoke_seconds: float = 0.0) -> int:
-    app = QApplication.instance() or QApplication(sys.argv)
+    existing = QApplication.instance()
+    app = existing if isinstance(existing, QApplication) else QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
     app.setOrganizationName(APP_ORG)
     app.setQuitOnLastWindowClosed(False)
