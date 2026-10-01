@@ -121,6 +121,19 @@ def _default_client() -> httpx.Client:
     )
 
 
+def edge_digest(path: Path) -> str:
+    """SHA-256 of the first and last MiB: cheap per-launch check that also catches
+    same-size in-place corruption where the filesystem keeps the old mtime."""
+    digest = hashlib.sha256()
+    size = path.stat().st_size
+    with path.open("rb") as handle:
+        digest.update(handle.read(_CHUNK))
+        if size > 2 * _CHUNK:
+            handle.seek(size - _CHUNK)
+            digest.update(handle.read(_CHUNK))
+    return digest.hexdigest()
+
+
 def sha256_file(path: Path, cancel: threading.Event | None = None) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as handle:
@@ -186,6 +199,7 @@ class ModelManager:
             and marker.get("sha256") == file.sha256
             and marker.get("size") == stat.st_size
             and int(marker.get("mtime_ns", -1)) == stat.st_mtime_ns
+            and marker.get("edge") == edge_digest(final)
         )
 
     def verify_full(self, cancel: threading.Event | None = None) -> bool:
@@ -359,7 +373,12 @@ class ModelManager:
 
     def _write_marker(self, file: ModelFile) -> None:
         stat = self.path_for(file).stat()
-        marker = {"sha256": file.sha256, "size": stat.st_size, "mtime_ns": stat.st_mtime_ns}
+        marker = {
+            "sha256": file.sha256,
+            "size": stat.st_size,
+            "mtime_ns": stat.st_mtime_ns,
+            "edge": edge_digest(self.path_for(file)),
+        }
         self._marker(file).write_text(json.dumps(marker), encoding="utf-8")
 
     def _remove(self, file: ModelFile) -> None:

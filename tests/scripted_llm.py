@@ -33,21 +33,53 @@ def respond(messages: list[ChatMessage]) -> dict:
     facts = []
     nose = _find(segments, "нос", "справа")
     if nose:
-        facts.append({"id": "f1", "category": "complaint", "value": "затруднение носового дыхания, преимущественно справа",
-                      "temporality": "current", "evidence_segment_ids": [nose["id"]], "evidence_quote": nose["text"]})
+        facts.append(
+            {
+                "id": "f1",
+                "category": "complaint",
+                "value": "затруднение носового дыхания, преимущественно справа",
+                "temporality": "current",
+                "evidence_segment_ids": [nose["id"]],
+                "evidence_quote": nose["text"],
+            }
+        )
     week = _find(segments, "неделю")
     if week:
-        facts.append({"id": "f2", "category": "duration", "value": "около 7 дней", "statement": "Считает себя больным около 7 дней.",
-                      "evidence_segment_ids": [week["id"]], "evidence_quote": week["text"]})
+        facts.append(
+            {
+                "id": "f2",
+                "category": "duration",
+                "value": "около 7 дней",
+                "statement": "Считает себя больным около 7 дней.",
+                "evidence_segment_ids": [week["id"]],
+                "evidence_quote": week["text"],
+            }
+        )
     temp = _find(segments, "первые два дня")
     if temp:
-        facts.append({"id": "f3", "category": "temperature", "value": "37,5 °C в первые двое суток", "temporality": "past",
-                      "statement": "В первые двое суток отмечал повышение температуры тела до 37,5 °C.",
-                      "evidence_segment_ids": [temp["id"]], "evidence_quote": temp["text"]})
+        facts.append(
+            {
+                "id": "f3",
+                "category": "temperature",
+                "value": "37,5 °C в первые двое суток",
+                "temporality": "past",
+                "statement": "В первые двое суток отмечал повышение температуры тела до 37,5 °C.",
+                "evidence_segment_ids": [temp["id"]],
+                "evidence_quote": temp["text"],
+            }
+        )
     # A hallucination the safety layer must drop: nothing in the dialogue supports it.
     if segments:
-        facts.append({"id": "f4", "category": "treatment", "value": "Називин", "statement": "Самостоятельно применял Називин.",
-                      "evidence_segment_ids": [segments[0]["id"]], "evidence_quote": segments[0]["text"]})
+        facts.append(
+            {
+                "id": "f4",
+                "category": "treatment",
+                "value": "Називин",
+                "statement": "Самостоятельно применял Називин.",
+                "evidence_segment_ids": [segments[0]["id"]],
+                "evidence_quote": segments[0]["text"],
+            }
+        )
     return {"facts": facts}
 
 

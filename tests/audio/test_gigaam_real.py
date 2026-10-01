@@ -67,7 +67,9 @@ def test_too_long_segment_is_refused(gigaam):
     from mva.transcription.base import TranscriptionError
 
     with pytest.raises(TranscriptionError):
-        gigaam.transcribe(AudioSegment(seq=1, start_ms=0, end_ms=30000, samples=np.zeros(16000 * 30, np.float32)))
+        gigaam.transcribe(
+            AudioSegment(seq=1, start_ms=0, end_ms=30000, samples=np.zeros(16000 * 30, np.float32))
+        )
 
 
 def test_self_test_report(gigaam):

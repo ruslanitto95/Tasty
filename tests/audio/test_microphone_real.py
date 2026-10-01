@@ -23,7 +23,9 @@ pytestmark = [pytest.mark.model, pytest.mark.audio_device]
 def _virtual_sink() -> bool:
     if not shutil.which("pactl") or not shutil.which("paplay"):
         return False
-    out = subprocess.run(["pactl", "get-default-source"], capture_output=True, text=True, check=False)
+    out = subprocess.run(
+        ["pactl", "get-default-source"], capture_output=True, text=True, check=False
+    )
     return out.returncode == 0 and out.stdout.strip().endswith(".monitor")
 
 

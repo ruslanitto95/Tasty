@@ -19,7 +19,9 @@ from mva.transcription.models import Transcript, TranscriptSegment
 def make_transcript(lines: list[str]) -> Transcript:
     return Transcript(
         segments=[
-            TranscriptSegment(id=f"s{i + 1:04d}", seq=i + 1, start_ms=i * 5000, end_ms=i * 5000 + 4000, text=t)
+            TranscriptSegment(
+                id=f"s{i + 1:04d}", seq=i + 1, start_ms=i * 5000, end_ms=i * 5000 + 4000, text=t
+            )
             for i, t in enumerate(lines)
         ]
     )
@@ -44,7 +46,9 @@ class ScriptedProb:
 class FileCapture:
     """Stands in for AudioCaptureService: streams a WAV in real-time-ish blocks on a thread."""
 
-    def __init__(self, path: Path | None = None, speed: float = 8.0, lose_after_s: float | None = None) -> None:
+    def __init__(
+        self, path: Path | None = None, speed: float = 8.0, lose_after_s: float | None = None
+    ) -> None:
         self.audio = read_audio_16k(path or self_test_wav())
         self.speed = speed
         self.lose_after_s = lose_after_s
