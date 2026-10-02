@@ -62,22 +62,8 @@ jobs:
           "MVA_EXE=$dir\MedicalVisitAssistant.exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           Get-ChildItem "$env:APPDATA\Microsoft\Windows\Start Menu\Programs" -Filter "Medical*"
 
-      - name: First run from installed app (clean profile, no Python on PATH)
-        run: |
-          $env:LOCALAPPDATA = "$env:RUNNER_TEMP\clean-profile\AppData\Local"
-          New-Item -ItemType Directory -Force $env:LOCALAPPDATA | Out-Null
-          $env:PATH = "C:\Windows\system32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0"
-          $p = Start-Process $env:MVA_EXE -ArgumentList "--self-test","--report","$env:RUNNER_TEMP\selftest-windows.json" -Wait -PassThru
-          Get-Content "$env:RUNNER_TEMP\selftest-windows.json"
-          Get-ChildItem "$env:LOCALAPPDATA\MedicalVisitAssistant\models"
-          if ($p.ExitCode -ne 0) { throw "self-test failed: $($p.ExitCode)" }
-          $r = Get-Content "$env:RUNNER_TEMP\selftest-windows.json" -Raw | ConvertFrom-Json
-          if ($r.steps[0].detail.status_before -ne "missing") { throw "model was not downloaded by the app on first run" }
-
-      - name: Virtual microphone (VB-CABLE) for a real WASAPI capture test
-        id: vbcable
-        continue-on-error: true
-        timeout-minutes: 6
+      - name: Virtual microphone (VB-CABLE)
+        timeout-minutes: 8
         run: |
           Set-Service Audiosrv -StartupType Automatic; Start-Service Audiosrv; Start-Service AudioEndpointBuilder -ErrorAction SilentlyContinue
           Invoke-WebRequest https://download.vb-audio.com/Download_CABLE/VBCABLE_Driver_Pack43.zip -OutFile $env:RUNNER_TEMP\vbcable.zip
@@ -92,22 +78,56 @@ jobs:
           Start-Sleep -Seconds 10
           uv run python -c "import sounddevice as sd; [print(i, d['name'], sd.query_hostapis(d['hostapi'])['name'], d['max_input_channels'], d['max_output_channels']) for i, d in enumerate(sd.query_devices())]"
 
-      - name: Microphone transcription through the installed app (WASAPI)
-        if: steps.vbcable.outcome == 'success'
-        continue-on-error: true
-        timeout-minutes: 8
+      - name: Allow desktop apps to use the microphone (Settings → Privacy → Microphone)
+        run: |
+          $key = "Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone"
+          foreach ($k in @("HKLM:\$key", "HKCU:\$key", "HKCU:\$key\NonPackaged")) {
+            Write-Host "$k before: $((Get-ItemProperty $k -ErrorAction SilentlyContinue).Value)"
+            New-Item -Path $k -Force | Out-Null
+            Set-ItemProperty -Path $k -Name Value -Value "Allow" -Type String
+          }
+
+      - name: Headless self-test on a clean profile (download + load + WAV + microphone)
+        timeout-minutes: 15
+        run: |
+          $env:LOCALAPPDATA = "$env:RUNNER_TEMP\profile-selftest\AppData\Local"
+          New-Item -ItemType Directory -Force $env:LOCALAPPDATA | Out-Null
+          $player = Start-Job -FilePath scripts\ci_play_loop.ps1 -ArgumentList $env:GITHUB_WORKSPACE
+          $report = "$env:RUNNER_TEMP\selftest-windows.json"
+          # Arguments without spaces: Start-Process joins -ArgumentList without quoting.
+          $p = Start-Process $env:MVA_EXE -ArgumentList "--self-test","--mic-seconds","25","--mic-device","CABLE","--include-mic-text","--report",$report -Wait -PassThru
+          Stop-Job $player; Receive-Job $player
+          Get-Content "$env:LOCALAPPDATA\MedicalVisitAssistant\logs\mva.log" -Tail 40
+          if (-not (Test-Path $report)) { throw "no report written (exit $($p.ExitCode))" }
+          Get-Content $report
+          $r = Get-Content $report -Raw | ConvertFrom-Json
+          if ($p.ExitCode -ne 0 -or -not $r.ok) { throw "self-test failed: exit $($p.ExitCode)" }
+          if ($r.steps[0].detail.status_before -ne "missing") { throw "model was not downloaded by the app" }
+          $names = ($r.steps | ForEach-Object { $_.name }) -join ","
+          if ($names -ne "model_download,model_load,wav_transcription,microphone_transcription") { throw "steps: $names" }
+          $mic = $r.steps[3].detail
+          Write-Host "Microphone captured via host API: $($mic.device_hostapi) ($($mic.device_name))"
+          if ($mic.keywords_found.Count -lt 3) { throw "microphone transcription too poor: $($mic.text)" }
+
+      - name: GUI first run on a clean profile (wizard downloads, loads, tests WAV and microphone)
+        timeout-minutes: 15
         run: |
           $env:LOCALAPPDATA = "$env:RUNNER_TEMP\clean-profile\AppData\Local"
-          $player = Start-Job -ScriptBlock {
-            param($ws)
-            Start-Sleep -Seconds 8
-            Set-Location $ws
-            uv run python -c "import sounddevice as sd, soundfile as sf; x, r = sf.read('src/mva/resources/test_audio/self_test_ru.wav', dtype='float32'); dev = [i for i, d in enumerate(sd.query_devices()) if 'CABLE Input' in d['name'] and d['max_output_channels'] > 0][0]; sd.play(x, r, device=dev, blocking=True)"
-          } -ArgumentList $env:GITHUB_WORKSPACE
-          $p = Start-Process $env:MVA_EXE -ArgumentList "--self-test","--mic-seconds","30","--mic-device","CABLE Output","--include-mic-text","--report","$env:RUNNER_TEMP\selftest-windows-mic.json" -Wait -PassThru
-          Receive-Job $player -Wait
-          Get-Content "$env:RUNNER_TEMP\selftest-windows-mic.json"
-          if ($p.ExitCode -ne 0) { throw "mic self-test failed: $($p.ExitCode)" }
+          New-Item -ItemType Directory -Force $env:LOCALAPPDATA | Out-Null
+          $player = Start-Job -FilePath scripts\ci_play_loop.ps1 -ArgumentList $env:GITHUB_WORKSPACE
+          # The installed app must not depend on Python/uv/Git being on PATH.
+          $env:PATH = "C:\Windows\system32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0"
+          $report = "$env:RUNNER_TEMP\gui-first-run-windows.json"
+          $p = Start-Process $env:MVA_EXE -ArgumentList "--gui-first-run-check",$report,"--mic-seconds","25","--mic-device","CABLE" -Wait -PassThru
+          Stop-Job $player; Receive-Job $player
+          Get-Content "$env:LOCALAPPDATA\MedicalVisitAssistant\logs\mva.log" -Tail 40
+          if (-not (Test-Path $report)) { throw "no report written (exit $($p.ExitCode))" }
+          Get-Content $report
+          $r = Get-Content $report -Raw | ConvertFrom-Json
+          if ($p.ExitCode -ne 0 -or -not $r.ok) { throw "GUI first-run check failed: exit $($p.ExitCode) errors $($r.errors)" }
+          if ($r.model_status_before -ne "missing" -or $r.model_status_after -ne "ready") { throw "model was not downloaded by the GUI" }
+          if (-not $r.wav_ok -or -not $r.mic_ok) { throw "WAV/mic check failed" }
+          Get-ChildItem "$env:LOCALAPPDATA\MedicalVisitAssistant\models"
 
       - name: GUI smoke test of the installed app
         timeout-minutes: 5
@@ -138,5 +158,5 @@ jobs:
           path: |
             dist/MedicalVisitAssistant-0.1.0-Setup.exe
             ${{ runner.temp }}/selftest-windows.json
-            ${{ runner.temp }}/selftest-windows-mic.json
+            ${{ runner.temp }}/gui-first-run-windows.json
             ${{ runner.temp }}/install.log

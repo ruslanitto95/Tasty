@@ -6,6 +6,7 @@ import logging
 import sys
 import threading
 import traceback
+from pathlib import Path
 from types import TracebackType
 
 from PySide6.QtCore import QLibraryInfo, QLocale, QLockFile, QObject, QTimer, QTranslator, Signal
@@ -41,7 +42,12 @@ def install_crash_handler(bridge: _CrashBridge) -> None:
     )
 
 
-def run_gui(smoke_seconds: float = 0.0) -> int:
+def run_gui(
+    smoke_seconds: float = 0.0,
+    first_run_report: Path | None = None,
+    mic_seconds: float = 25.0,
+    mic_device: str | None = None,
+) -> int:
     existing = QApplication.instance()
     app = existing if isinstance(existing, QApplication) else QApplication(sys.argv)
     app.setApplicationName(APP_NAME)
@@ -59,7 +65,13 @@ def run_gui(smoke_seconds: float = 0.0) -> int:
         return 0
     quiet_native_warnings()
     store = SettingsStore(settings_file())
+    if first_run_report is not None and mic_device:
+        settings = store.load()
+        settings.audio.device_name = mic_device
+        settings.audio.device_hostapi = None
+        store.save(settings)
     controller = AppController(store)
+    status_before = controller.manager.status().value
     apply_theme(app, controller.settings.general.theme)
     bridge = _CrashBridge()
     window = MainWindow(controller)
@@ -67,7 +79,22 @@ def run_gui(smoke_seconds: float = 0.0) -> int:
     install_crash_handler(bridge)
     window.show()
     controller.startup()
-    if not controller.settings.onboarding_completed and smoke_seconds <= 0:
+    result = {"ok": True}
+    if first_run_report is not None:
+        from mva.ui.first_run_check import FirstRunCheck
+        from mva.ui.onboarding import OnboardingWizard
+
+        wizard = OnboardingWizard(controller, window)
+
+        def done(ok: bool) -> None:
+            result["ok"] = ok
+            QTimer.singleShot(500, window.quit)
+
+        check = FirstRunCheck(
+            controller, wizard, first_run_report, mic_seconds, status_before, done
+        )
+        QTimer.singleShot(200, check.start)
+    elif not controller.settings.onboarding_completed and smoke_seconds <= 0:
         from mva.ui.onboarding import OnboardingWizard
 
         QTimer.singleShot(200, lambda: OnboardingWizard(controller, window).exec())
@@ -75,4 +102,4 @@ def run_gui(smoke_seconds: float = 0.0) -> int:
         QTimer.singleShot(int(smoke_seconds * 1000), window.quit)
     code = app.exec()
     lock.unlock()
-    return int(code)
+    return int(code) or (0 if result["ok"] else 1)
