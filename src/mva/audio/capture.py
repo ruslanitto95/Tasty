@@ -260,6 +260,8 @@ class AudioCaptureService:
                 expanded = True
                 candidates = open_candidates(device)
         assert first_error is not None
+        if windows_microphone_blocked():
+            raise MicrophonePermissionDenied("windows privacy setting") from first_error
         raise _map_portaudio_error(first_error) from first_error
 
     def _pump(
@@ -345,6 +347,37 @@ class AudioCaptureService:
                 thread.join(3.0)
             self._thread = None
             log.info("Capture stopped (overflows=%d)", self.overflows)
+
+
+_CONSENT = (
+    r"Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone"
+)
+
+
+def windows_microphone_blocked() -> bool:
+    """True if Windows privacy settings deny microphone access to desktop apps.
+
+    PortAudio then fails with opaque errors (MME "Undefined external error", WASAPI
+    invalid device), see PortAudio issue #360, so check the consent store explicitly.
+    """
+    if sys.platform != "win32":
+        return False
+    import winreg
+
+    def value(root: int, key: str) -> str | None:
+        try:
+            with winreg.OpenKey(root, key) as handle:
+                return str(winreg.QueryValueEx(handle, "Value")[0])
+        except OSError:
+            return None
+
+    checks = [
+        value(winreg.HKEY_LOCAL_MACHINE, _CONSENT),
+        value(winreg.HKEY_CURRENT_USER, _CONSENT),
+        value(winreg.HKEY_CURRENT_USER, _CONSENT + r"\NonPackaged"),
+    ]
+    log.info("Windows microphone consent: %s", checks)
+    return any(v is not None and v.lower() == "deny" for v in checks)
 
 
 def _map_portaudio_error(exc: Exception) -> MicrophoneError:

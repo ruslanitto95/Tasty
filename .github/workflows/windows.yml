@@ -78,6 +78,15 @@ jobs:
           Start-Sleep -Seconds 10
           uv run python -c "import sounddevice as sd; [print(i, d['name'], sd.query_hostapis(d['hostapi'])['name'], d['max_input_channels'], d['max_output_channels']) for i, d in enumerate(sd.query_devices())]"
 
+      - name: Allow desktop apps to use the microphone (Settings → Privacy → Microphone)
+        run: |
+          $key = "Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone"
+          foreach ($k in @("HKLM:\$key", "HKCU:\$key", "HKCU:\$key\NonPackaged")) {
+            Write-Host "$k before: $((Get-ItemProperty $k -ErrorAction SilentlyContinue).Value)"
+            New-Item -Path $k -Force | Out-Null
+            Set-ItemProperty -Path $k -Name Value -Value "Allow" -Type String
+          }
+
       - name: Headless self-test on a clean profile (download + load + WAV + microphone)
         timeout-minutes: 15
         run: |

@@ -81,3 +81,14 @@ def test_all_fail_raises_clean_error(monkeypatch):
 def test_same_endpoint_matches_truncated_mme_names():
     assert capture._same_endpoint(WASAPI.name, MME.name)
     assert not capture._same_endpoint(WASAPI.name, "Microphone (Realtek)")
+
+
+def test_blocked_privacy_setting_reports_permission(monkeypatch):
+    from mva.audio.capture import MicrophonePermissionDenied
+
+    sd = FakeSD(bad={(9, 1), (9, 2)})
+    monkeypatch.setattr(capture, "_sd", lambda: sd)
+    monkeypatch.setattr(capture, "open_candidates", lambda _d: [])
+    monkeypatch.setattr(capture, "windows_microphone_blocked", lambda: True)
+    with pytest.raises(MicrophonePermissionDenied):
+        AudioCaptureService().start(WASAPI, lambda _b: None)
