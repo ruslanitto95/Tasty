@@ -76,7 +76,8 @@ def refresh_portaudio() -> None:
         log.warning("PortAudio refresh failed: %s", type(exc).__name__)
 
 
-def list_input_devices(refresh: bool = False) -> list[InputDevice]:
+def all_input_devices(refresh: bool = False) -> list[InputDevice]:
+    """Every capture endpoint across all host APIs (the same mic appears once per API)."""
     try:
         sd = _sd()
     except OSError:
@@ -91,41 +92,45 @@ def list_input_devices(refresh: bool = False) -> list[InputDevice]:
     except Exception as exc:
         log.warning("Device query failed: %s", type(exc).__name__)
         return []
-    preferred = _PREFERRED_HOSTAPIS.get(sys.platform, ())
-    available = {h["name"] for h in hostapis}
-    chosen_api = next((name for name in preferred if name in available), None)
-    result: list[InputDevice] = []
-    for idx, dev in enumerate(devices):
-        if dev["max_input_channels"] <= 0:
-            continue
-        api_name = hostapis[dev["hostapi"]]["name"]
-        if chosen_api and api_name != chosen_api:
-            continue
-        result.append(
-            InputDevice(
-                index=idx,
-                name=str(dev["name"]),
-                hostapi=api_name,
-                default_samplerate=float(dev["default_samplerate"]),
-                channels=int(dev["max_input_channels"]),
-                is_default=idx == default_in,
-            )
+    return [
+        InputDevice(
+            index=idx,
+            name=str(dev["name"]),
+            hostapi=str(hostapis[dev["hostapi"]]["name"]),
+            default_samplerate=float(dev["default_samplerate"]),
+            channels=int(dev["max_input_channels"]),
+            is_default=idx == default_in,
         )
-    if chosen_api and not result:
-        # Preferred host API exposes nothing (unusual drivers): fall back to all APIs.
-        for idx, dev in enumerate(devices):
-            if dev["max_input_channels"] > 0:
-                result.append(
-                    InputDevice(
-                        idx,
-                        str(dev["name"]),
-                        hostapis[dev["hostapi"]]["name"],
-                        float(dev["default_samplerate"]),
-                        int(dev["max_input_channels"]),
-                        idx == default_in,
-                    )
-                )
-    return result
+        for idx, dev in enumerate(devices)
+        if dev["max_input_channels"] > 0
+    ]
+
+
+def list_input_devices(refresh: bool = False) -> list[InputDevice]:
+    """Devices of the preferred host API (WASAPI on Windows) for the UI list."""
+    devices = all_input_devices(refresh)
+    preferred = _PREFERRED_HOSTAPIS.get(sys.platform, ())
+    available = {d.hostapi for d in devices}
+    chosen_api = next((name for name in preferred if name in available), None)
+    chosen = [d for d in devices if chosen_api is None or d.hostapi == chosen_api]
+    return chosen or devices
+
+
+# MME truncates endpoint names to 31 characters.
+_NAME_PREFIX = 31
+
+
+def _same_endpoint(a: str, b: str) -> bool:
+    return a[:_NAME_PREFIX].strip().lower() == b[:_NAME_PREFIX].strip().lower()
+
+
+def open_candidates(device: InputDevice) -> list[InputDevice]:
+    """Fallbacks for a device that failed to open: fresh index first, then other host APIs."""
+    fresh = all_input_devices(refresh=True)
+    same = [d for d in fresh if _same_endpoint(d.name, device.name)]
+    order = {name: i for i, name in enumerate(_PREFERRED_HOSTAPIS.get(sys.platform, ()))}
+    same.sort(key=lambda d: (d.hostapi != device.hostapi, order.get(d.hostapi, 99)))
+    return same
 
 
 def resolve_device(name: str | None, hostapi: str | None) -> InputDevice | None:
@@ -180,8 +185,6 @@ class AudioCaptureService:
             if device is None:
                 raise MicrophoneUnavailable("no input device")
             sd = _sd()
-            rate = int(device.default_samplerate) or 48000
-            resampler = StreamResampler(rate)
             self.meter.reset()
             self.overflows = 0
             self._queue = queue.Queue(maxsize=2000)
@@ -190,23 +193,14 @@ class AudioCaptureService:
                 self._last_callback = time.monotonic()
                 if status and status.input_overflow:
                     self.overflows += 1
+                block = indata[:, 0] if indata.shape[1] == 1 else indata.mean(axis=1)
                 try:
-                    self._queue.put_nowait(indata[:, 0].copy())
+                    self._queue.put_nowait(np.array(block, dtype=np.float32))
                 except queue.Full:
                     self.overflows += 1
 
-            try:
-                stream = sd.InputStream(
-                    device=device.index,
-                    channels=1,
-                    samplerate=rate,
-                    dtype="float32",
-                    blocksize=int(rate * 0.032),
-                    callback=callback,
-                )
-                stream.start()
-            except Exception as exc:
-                raise _map_portaudio_error(exc) from exc
+            stream, device, rate = self._open(sd, device, callback)
+            resampler = StreamResampler(rate)
             self._stream = stream
             self.device = device
             self._last_callback = time.monotonic()
@@ -220,6 +214,53 @@ class AudioCaptureService:
             self._thread.start()
             log.info("Capture started: hostapi=%s rate=%d", device.hostapi, rate)
             return device
+
+    def _open(self, sd: Any, device: InputDevice, callback: Any) -> tuple[Any, InputDevice, int]:
+        """Open the device; on failure retry with a refreshed index and other host APIs.
+
+        PortAudio indices change when devices are re-enumerated (hot-plug, re-init), and some
+        WASAPI endpoints reject mono shared-mode streams, so a single attempt is not enough.
+        """
+        first_error: Exception | None = None
+        tried: set[tuple[int, int]] = set()
+        candidates = [device]
+        expanded = False
+        while candidates:
+            candidate = candidates.pop(0)
+            rate = int(candidate.default_samplerate) or 48000
+            for channels in dict.fromkeys((1, min(2, max(1, candidate.channels)))):
+                if (candidate.index, channels) in tried:
+                    continue
+                tried.add((candidate.index, channels))
+                try:
+                    stream = sd.InputStream(
+                        device=candidate.index,
+                        channels=channels,
+                        samplerate=rate,
+                        dtype="float32",
+                        blocksize=int(rate * 0.032),
+                        callback=callback,
+                    )
+                    stream.start()
+                except Exception as exc:
+                    log.warning(
+                        "Open failed: index=%d hostapi=%s channels=%d devices=%d (%s)",
+                        candidate.index,
+                        candidate.hostapi,
+                        channels,
+                        len(sd.query_devices()),
+                        exc,
+                    )
+                    first_error = first_error or exc
+                    continue
+                if candidate is not device:
+                    log.info("Opened fallback endpoint: hostapi=%s", candidate.hostapi)
+                return stream, candidate, rate
+            if not candidates and not expanded:
+                expanded = True
+                candidates = open_candidates(device)
+        assert first_error is not None
+        raise _map_portaudio_error(first_error) from first_error
 
     def _pump(
         self,
