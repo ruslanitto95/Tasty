@@ -36,6 +36,12 @@ def _parse(argv: list[str]) -> argparse.Namespace:
     parser.add_argument(
         "--smoke-seconds", type=float, default=0.0, help="GUI: quit after N seconds"
     )
+    parser.add_argument(
+        "--gui-first-run-check",
+        type=Path,
+        metavar="REPORT",
+        help="GUI: drive the first-run wizard unattended (download, load, WAV + mic test)",
+    )
     parser.add_argument("--debug", action="store_true")
     return parser.parse_args(argv)
 
@@ -103,9 +109,24 @@ def _pick_device(name: str | None):  # type: ignore[no-untyped-def]
     return next((d for d in devices if name.lower() in d.name.lower()), None)
 
 
+def _resolve_device_name(name: str | None) -> str | None:
+    device = _pick_device(name)
+    return device.name if device is not None else None
+
+
 def main(argv: list[str] | None = None) -> int:
     _ensure_std_streams()
-    args = _parse(sys.argv[1:] if argv is None else argv)
+    try:
+        args = _parse(sys.argv[1:] if argv is None else argv)
+    except SystemExit as exc:
+        if exc.code not in (0, None):
+            # Windowed builds have no console: make argument errors visible in the log.
+            from mva.paths import logs_dir
+            from mva.security.privacy import configure_logging
+
+            configure_logging(logs_dir())
+            log.error("Invalid command line arguments (exit %s)", exc.code)
+        raise
     from mva.paths import logs_dir
     from mva.security.privacy import configure_logging
 
@@ -116,4 +137,9 @@ def main(argv: list[str] | None = None) -> int:
     os.environ.setdefault("QT_ENABLE_HIGHDPI_SCALING", "1")
     from mva.ui.application import run_gui
 
-    return run_gui(smoke_seconds=args.smoke_seconds)
+    return run_gui(
+        smoke_seconds=args.smoke_seconds,
+        first_run_report=args.gui_first_run_check,
+        mic_seconds=args.mic_seconds or 25.0,
+        mic_device=_resolve_device_name(args.mic_device),
+    )

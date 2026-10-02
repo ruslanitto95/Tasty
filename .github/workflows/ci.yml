@@ -64,6 +64,15 @@ jobs:
         run: |
           (sleep 3; paplay --device=vspk src/mva/resources/test_audio/self_test_ru.wav) &
           uv run mva --self-test --mic-seconds 26 --include-mic-text --report ${{ runner.temp }}/selftest-linux.json
+      - name: GUI first run on a clean profile (wizard downloads, loads, tests WAV and microphone)
+        env:
+          QT_QPA_PLATFORM: offscreen
+          MVA_HOME: ${{ runner.temp }}/mva-gui-fresh
+        run: |
+          (for i in $(seq 1 10); do paplay --device=vspk src/mva/resources/test_audio/self_test_ru.wav; sleep 1; done) &
+          uv run mva --gui-first-run-check ${{ runner.temp }}/gui-first-run-linux.json --mic-seconds 25
+          cat ${{ runner.temp }}/gui-first-run-linux.json
+          python3 -c "import json,sys; r=json.load(open(sys.argv[1])); assert r['ok'] and r['model_status_before']=='missing' and r['wav_ok'] and r['mic_ok'], r" ${{ runner.temp }}/gui-first-run-linux.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -71,3 +80,4 @@ jobs:
           path: |
             ${{ runner.temp }}/screens
             ${{ runner.temp }}/selftest-linux.json
+            ${{ runner.temp }}/gui-first-run-linux.json

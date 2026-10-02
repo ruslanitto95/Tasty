@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import cast
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
     QCheckBox,
     QComboBox,
@@ -39,6 +39,8 @@ class MicPage(QWizardPage):
         self.combo.addItem(tr("mic_default"), None)
         for dev in list_input_devices(refresh=True):
             self.combo.addItem(dev.name, (dev.name, dev.hostapi))
+            if dev.name == c.settings.audio.device_name:
+                self.combo.setCurrentIndex(self.combo.count() - 1)
         layout.addWidget(QLabel("Выберите микрофон, который будет слушать приём:"))
         layout.addWidget(self.combo)
         if self.combo.count() == 1:
@@ -57,6 +59,8 @@ class MicPage(QWizardPage):
 
 class GigaAMPage(QWizardPage):
     """Shows the automatic download/load started at app launch, then runs the WAV test."""
+
+    test_finished = Signal(bool, str)  # ok, recognised text (or error code)
 
     def __init__(self, c: AppController) -> None:
         super().__init__()
@@ -131,6 +135,7 @@ class GigaAMPage(QWizardPage):
             if isinstance(result, Exception):
                 self.status.setText(error_text("stt_failed"))
                 self.retry.setVisible(True)
+                self.test_finished.emit(False, "stt_failed")
                 return
             text, rtf = cast(tuple[str, float], result)
             self.ok = len(keyword_hits(text)) >= MIN_KEYWORDS
@@ -140,6 +145,7 @@ class GigaAMPage(QWizardPage):
             )
             self.result.setText(f"Распознано: «{text}»")
             self.completeChanged.emit()
+            self.test_finished.emit(self.ok, text)
 
         task = BackgroundTask(work, self)
         task.finished.connect(done)
@@ -190,6 +196,7 @@ class TestPage(QWizardPage):
     """Records a few seconds from the selected microphone and transcribes it with GigaAM."""
 
     SECONDS = 6.0
+    recorded = Signal(str, str)  # recognised text, error code ("" if none)
 
     def __init__(self, c: AppController) -> None:
         super().__init__()
@@ -237,11 +244,15 @@ class TestPage(QWizardPage):
             self.button.setEnabled(True)
             self.meter.reset()
             if isinstance(result, Exception):
-                self.result.setText(error_text(getattr(result, "code", "microphone_unavailable")))
+                code = getattr(result, "code", "microphone_unavailable")
+                self.result.setText(error_text(code))
+                self.recorded.emit("", code)
             elif not str(result).strip():
                 self.result.setText("Речь не распознана. Проверьте микрофон и попробуйте ещё раз.")
+                self.recorded.emit("", "no_speech")
             else:
                 self.result.setText(f"Распознано: «{result}»")
+                self.recorded.emit(str(result), "")
 
         task = BackgroundTask(work, self)
         task.progress.connect(lambda peak: self.meter.set_level(float(peak)))
